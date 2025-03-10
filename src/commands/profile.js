@@ -1,39 +1,31 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js")
+const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("perfil")
-		.setDescription("Verifica o perfil de um usuário no Codeforces.")
+		.setDescription("Acesse informações como rating, problemas resolvidos e mais de um usuário do codeforces")
 		.setDMPermission(false)
-		.addStringOption((string) => string.setName("user").setDescription("Nome do usuário").setRequired(true)),
+		.addStringOption((string) =>
+			string.setName("usuario").setDescription("Nome do usuário no codeforces").setRequired(true)
+		),
 	execute: async ({ interaction, instance }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
-			const user = interaction.options.getString("user")
+			const user = interaction.options.getString("usuario")
 
 			var request = await fetch(`https://codeforces.com/api/user.info?handles=${user}&checkHistoricHandles=false`, {
 				method: "GET",
 			})
 
 			var data = await request.json()
-
-			if (data.status === "OK") {
-				data = data.result[0]
-			} else {
-				throw new Error("User not found")
-			}
+			data = data.result[0]
 
 			request = await fetch(`https://codeforces.com/api/user.status?handle=${user}&from=1&count=1000000`, {
 				method: "GET",
 			})
 
 			submissoes = await request.json()
-
-			if (submissoes.status === "OK") {
-				submissoes = submissoes.result
-			} else {
-				throw new Error("User not found")
-			}
+			submissoes = submissoes.result
 
 			const triedProblems = new Set()
 			const contests = new Set()
@@ -112,10 +104,10 @@ module.exports = {
 				data.solvedCount > 0 ? `🏷️ Tags favoritas: ${data.tags[0][0]}, ${data.tags[1][0]}, ${data.tags[2][0]}\n` : ""
 			estatisticas += `🖥️ Número de submissões: ${data.submissionCount}`
 
-			var insignias = instance.getInsignias(data.handle)
+			var insignias = await instance.getInsignias(data.handle)
 
-			const embed = new EmbedBuilder()
-				.setColor(colors[data.rank ?? "newbie"])
+			const embed = instance
+				.createEmbed(colors[data.rank ?? "newbie"])
 				.setTitle(`${data.handle}` + nome)
 				.setDescription(
 					`🚀 Rating atual: ${data.rating ?? 0} | Máximo: ${data.maxRating ?? 0}\n👑 Rank atual: ${
