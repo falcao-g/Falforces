@@ -1,10 +1,8 @@
-const { Client, GatewayIntentBits, Collection } = require("discord.js")
+const { Client, GatewayIntentBits, Collection, EmbedBuilder } = require("discord.js")
 const { loadEvents } = require("./handlers/eventsHandler.js")
 const { loadCommands } = require("./handlers/commandsHandler.js")
 require("dotenv").config()
 
-// this is the main class for the bot, it handles all aspects of the bot
-// you can add more things to this class if you want
 class Bot {
 	config = require("./config.json")
 	databaseHandler = require("./handlers/databaseHandler")
@@ -20,8 +18,6 @@ class Bot {
 			console.log("Bot online")
 			this.client.on("error", console.error)
 
-			this.databaseHandler.connect()
-
 			this.client.events = new Collection()
 			this.client.commands = new Collection()
 
@@ -32,10 +28,6 @@ class Bot {
 		this.client.login(process.env.TOKEN)
 	}
 
-	// this is the main function for sending messages
-	// you pass the interaction, the name of the message and the arguments, it will return the message localized
-	// if the message is not found, it will return an error message
-	// if the locale is not found, it will default to en-US
 	getMessage(interaction, messageId, args = {}) {
 		const message = this._messages[messageId]
 		if (!message) {
@@ -54,8 +46,6 @@ class Bot {
 		return result
 	}
 
-	// this is a simple function to edit replies
-	// it already has some error handling built in
 	async editReply(interaction, { content, embeds, components, fetchReply = false }) {
 		return await interaction
 			.editReply({
@@ -69,17 +59,21 @@ class Bot {
 			})
 	}
 
-	getInsignias(handle) {
+	async getInsignias(handle) {
 		const insignias = []
 		const contests = this._contests
 
 		for (const contest of contests) {
 			if (contest.participantes.includes(handle)) {
-				insignias.push(contest.insignia)
+				insignias.push(await this.client.application.emojis.fetch(contest.insignia))
 			}
 		}
 
 		return insignias
+	}
+
+	createEmbed(color = "Random") {
+		return new EmbedBuilder().setColor(color).setFooter({ text: "by Falcão ❤️" })
 	}
 }
 
