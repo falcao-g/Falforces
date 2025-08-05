@@ -15,7 +15,7 @@ module.exports = {
 		try {
 			const embed = instance.createEmbed(3426654).addFields({
 				name: "Falforces",
-				value: `:house: Servidores: ${client.guilds.cache.size}\n:zap: Online por: *${msToTime(client.uptime)}*`,
+				value: `:house: Servidores: ${client.guilds.cache.size}\n:zap: Online por: ${msToTime(client.uptime)}`,
 			})
 			await instance.editReply(interaction, { embeds: [embed] })
 		} catch (error) {
