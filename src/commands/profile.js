@@ -53,7 +53,7 @@ module.exports = {
 		estatisticas += `🌐 Linguagem mais usada: ${data.topLanguage}\n`
 		estatisticas += `🖥️ Número de submissões: ${data.submissionCount}`
 
-		var insignias = 0
+		var insignias = await instance.getInsignias(data.handle)
 
 		if (insignias.length > 0) {
 			embed.addFields({
