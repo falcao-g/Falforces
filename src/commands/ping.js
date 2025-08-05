@@ -1,15 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js")
 
-// this is just a simple ping command
-// it's not really needed but it's a good example
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("ping")
-		.setDescription("Checks the bot's ping.")
-		//you can localize your commands like this
-		.setDescriptionLocalization("pt-BR", "Verifica o ping do bot.")
-		.setDMPermission(false),
+	data: new SlashCommandBuilder().setName("ping").setDescription("Verifica o ping do bot").setDMPermission(false),
 	execute: async ({ interaction, instance }) => {
 		try {
 			// i recommend always deferring the reply so you have more time to answer

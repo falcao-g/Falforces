@@ -1,6 +1,6 @@
 {
 	"name": "falforces",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "falforces",
 	"main": "./src/index.js",
 	"scripts": {
@@ -9,7 +9,7 @@
 	"author": "Falcão",
 	"license": "GNU 3.0",
 	"dependencies": {
-		"discord.js": "^14.9.0",
+		"discord.js": "^14.18.0",
 		"dotenv": "^16.0.1",
 		"mongoose": "^6.8.0"
 	}
