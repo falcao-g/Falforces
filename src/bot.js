@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, EmbedBuilder } = require("discord.js")
+const { Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityType } = require("discord.js")
 const { loadEvents } = require("./handlers/eventsHandler.js")
 const { loadCommands } = require("./handlers/commandsHandler.js")
 require("dotenv").config()
@@ -26,6 +26,17 @@ class Bot {
 
 			loadEvents(this, this.client)
 			loadCommands(this, this.client)
+
+			this.client.user.setPresence({
+				status: "online",
+				activities: [
+					{
+						type: ActivityType.Custom,
+						name: "CustomStatus",
+						state: `Promovendo a Programação Competitiva de forma divertida!`,
+					},
+				],
+			})
 		})
 
 		this.client.login(process.env.TOKEN)
@@ -97,8 +108,13 @@ class Bot {
 
 		var hardestSolvedRating = 0
 		var hardestSolved = ``
+		var languages = new Map()
 		allSubs.forEach((submissao) => {
 			triedProblems.add(submissao.problem.name)
+
+			if (submissao.programmingLanguage && submissao.programmingLanguage !== "unknown") {
+				languages.set(submissao.programmingLanguage, (languages.get(submissao.programmingLanguage) || 0) + 1)
+			}
 
 			if (submissao.verdict === "OK") {
 				solvedProblems.add(submissao.problem.name)
@@ -126,6 +142,10 @@ class Bot {
 		user.solvedCount = solvedProblems.size
 		user.hardestSolved = hardestSolved
 		user.contestCount = contests.size
+		user.topLanguage =
+			Array.from(languages.entries())
+				.sort((a, b) => b[1] - a[1])
+				.map((lang) => lang[0])[0] || "Unknown"
 		user.tags = Array.from(favoriteTags).sort((a, b) => b[1] - a[1])
 		user.submissionCount = allSubs.length
 

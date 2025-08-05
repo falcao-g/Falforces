@@ -43,6 +43,7 @@ const profileSchema = new mongoose.Schema(
 		contestCount: { type: Number, default: 0 },
 		tags: { type: Array, default: [] },
 		submissionCount: { type: Number, default: 0 },
+		topLanguage: { type: String, default: "" },
 		lastFetched: { type: Number, default: 0 },
 	},
 	{

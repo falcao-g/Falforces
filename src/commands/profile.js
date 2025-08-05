@@ -16,8 +16,7 @@ module.exports = {
 
 		const colors = {
 			newbie: "#808080",
-			pupil: "#88CC23",
-			apprentice: "#008002",
+			pupil: "#008002",
 			specialist: "#05A89F",
 			expert: "#0000FF",
 			"candidate master": "#AA01AA",
@@ -51,9 +50,10 @@ module.exports = {
 		estatisticas += `🏆 Contests participados: ${data.contestCount}\n`
 		estatisticas +=
 			data.solvedCount > 0 ? `🏷️ Tags favoritas: ${data.tags[0][0]}, ${data.tags[1][0]}, ${data.tags[2][0]}\n` : ""
+		estatisticas += `🌐 Linguagem mais usada: ${data.topLanguage}\n`
 		estatisticas += `🖥️ Número de submissões: ${data.submissionCount}`
 
-		var insignias = await instance.getInsignias(data.handle)
+		var insignias = 0
 
 		if (insignias.length > 0) {
 			embed.addFields({

@@ -1,4 +1,4 @@
-const { ActionRowBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js")
 
 /**
  * @param {integer} ms
@@ -7,36 +7,36 @@ const { ActionRowBuilder } = require('discord.js');
  * @returns {string}
  */
 function msToTime(ms) {
-	let time = '';
+	let time = ""
 
-	let n = 0;
+	let n = 0
 	if (ms >= 2592000000) {
-		n = Math.floor(ms / 2592000000);
-		time += `${n}m `;
-		ms -= n * 2592000000;
+		n = Math.floor(ms / 2592000000)
+		time += `${n}m `
+		ms -= n * 2592000000
 	}
 
 	if (ms >= 86400000) {
-		n = Math.floor(ms / 86400000);
-		time += `${n}d `;
-		ms -= n * 86400000;
+		n = Math.floor(ms / 86400000)
+		time += `${n}d `
+		ms -= n * 86400000
 	}
 
 	if (ms >= 3600000) {
-		n = Math.floor(ms / 3600000);
-		time += `${n}h `;
-		ms -= n * 3600000;
+		n = Math.floor(ms / 3600000)
+		time += `${n}h `
+		ms -= n * 3600000
 	}
 
 	if (ms >= 60000) {
-		n = Math.floor(ms / 60000);
-		time += `${n}m `;
-		ms -= n * 60000;
+		n = Math.floor(ms / 60000)
+		time += `${n}m `
+		ms -= n * 60000
 	}
 
-	if (time === '') time += '1m';
+	if (time === "") time += "1m"
 
-	return time.trimEnd();
+	return time.trimEnd()
 }
 
 /**
@@ -48,22 +48,22 @@ function msToTime(ms) {
  */
 function format(falcoins) {
 	if (parseInt(falcoins) < 0) {
-		falcoins = falcoins.toString();
-		pop = falcoins.slice(1);
+		falcoins = falcoins.toString()
+		pop = falcoins.slice(1)
 	} else {
-		pop = falcoins.toString();
+		pop = falcoins.toString()
 	}
-	pop_reverse = pop.split('').reverse().join('');
-	pop_2 = '';
+	pop_reverse = pop.split("").reverse().join("")
+	pop_2 = ""
 	for (c in pop_reverse) {
 		if (c / 3 == parseInt(c / 3) && c / 3 != 0) {
-			pop_2 += '.';
-			pop_2 += pop_reverse[c];
+			pop_2 += "."
+			pop_2 += pop_reverse[c]
 		} else {
-			pop_2 += pop_reverse[c];
+			pop_2 += pop_reverse[c]
 		}
 	}
-	return pop_2.split('').reverse().join('');
+	return pop_2.split("").reverse().join("")
 }
 
 /**
@@ -75,44 +75,60 @@ function format(falcoins) {
  * @returns {integer}
  */
 function randint(low, high) {
-	return Math.floor(Math.random() * (high - low + 1) + low);
+	return Math.floor(Math.random() * (high - low + 1) + low)
 }
 
 /**
- * @description Creates a pagination system
+ * @description Creates a paginator for embeds and components
  */
 function paginate() {
-	const __embeds = [];
-	let cur = 0;
-	let traverser;
+	const __embeds = []
+	const __components = []
+	let cur = 0
+	let traverser
 	return {
 		add(...embeds) {
-			__embeds.push(...embeds);
-			return this;
+			__embeds.push(...embeds)
+			return this
+		},
+		addComponents(...components) {
+			__components.push(...components)
+			return this
 		},
 		setTraverser(tr) {
-			traverser = tr;
+			traverser = tr
 		},
 		async next() {
-			cur++;
+			cur++
 			if (cur >= __embeds.length) {
-				cur = 0;
+				cur = 0
 			}
 		},
 		async back() {
-			cur--;
+			cur--
 			if (cur <= -__embeds.length) {
-				cur = 0;
+				cur = 0
 			}
 		},
 		components() {
+			componentsToAdd = []
+
+			if (__components.length > 0) {
+				if (__components.length === __embeds.length && __components.at(cur) instanceof ButtonBuilder) {
+					componentsToAdd.push(new ActionRowBuilder().addComponents(__components.at(cur)).addComponents(...traverser))
+				} else {
+					componentsToAdd.push(new ActionRowBuilder().addComponents(__components.at(cur)))
+					if (__embeds.length > 1) componentsToAdd.push(new ActionRowBuilder().addComponents(...traverser))
+				}
+			}
+
 			return {
 				embeds: [__embeds.at(cur)],
-				components: [new ActionRowBuilder().addComponents(...traverser)],
+				components: componentsToAdd,
 				fetchReply: true,
-			};
+			}
 		},
-	};
+	}
 }
 
 /**
@@ -124,56 +140,18 @@ function paginate() {
  */
 function pick(data) {
 	// Split input into two separate arrays of values and weights.
-	const values = data.map((d) => d[0]);
-	const weights = data.map((d) => d[1]);
+	const values = data.map((d) => d[0])
+	const weights = data.map((d) => d[1])
 
-	let acc = 0;
-	const sum = weights.reduce((acc, element) => acc + element, 0);
+	let acc = 0
+	const sum = weights.reduce((acc, element) => acc + element, 0)
 	const weightsSum = weights.map((element) => {
-		acc = element + acc;
-		return acc;
-	});
-	const rand = Math.random() * sum;
+		acc = element + acc
+		return acc
+	})
+	const rand = Math.random() * sum
 
-	return values[weightsSum.filter((element) => element <= rand).length];
-}
-
-/**
- *
- * @param {DiscordID} id
- * @param {string} command
- * @param {integer} cooldown
- * @description Sets a cooldown for a command
- * @async
- * @example setCooldown(id, 'explore', 60) // Sets a 60s cooldown for the explore command
- * @returns {Promise<void>}
- */
-async function setCooldown(id, command, cooldown) {
-	const { cooldowns } = await userSchema.findById(id);
-	cooldowns.set(command, Date.now() + cooldown * 1000);
-	await changeDB(id, 'cooldowns', cooldowns, true);
-}
-
-/**
- *
- * @param {DiscordID} id
- * @param {string} command
- * @description Resolves a cooldown for a command
- * @async
- * @example resolveCooldown(id, 'explore') // Returns 0 if the cooldown is over, or the remaining time if it isn't
- * @returns {integer}
- */
-async function resolveCooldown(id, command) {
-	const { cooldowns } = await userSchema.findById(id);
-	const commandField = cooldowns.get(command);
-	if (commandField != undefined) {
-		if (commandField > Date.now()) {
-			return commandField - Date.now();
-		}
-		cooldowns.set(command, 0);
-		await changeDB(id, 'cooldowns', cooldowns, true);
-	}
-	return 0;
+	return values[weightsSum.filter((element) => element <= rand).length]
 }
 
 module.exports = {
@@ -182,6 +160,4 @@ module.exports = {
 	randint,
 	paginate,
 	pick,
-	setCooldown,
-	resolveCooldown,
-};
+}
