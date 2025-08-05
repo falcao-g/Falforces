@@ -27,4 +27,4 @@ Falforces é um bot que tem como objetivo promover a Programação Competitiva d
 - 🎖️ Crie insignias personalizadas para participantes de competições oficiais
 - ✨ E muito mais!
 
-Adicione ele no seu servidor por esse [link](https://discord.com/oauth2/authorize?client_id=1100513710566547517&scope=bot%20applications.commands)
+Adicione ele no seu servidor por esse [link](https://discord.com/oauth2/authorize?client_id=1348139773658796073&permissions=0&integration_type=0&scope=bot+applications.commands)
