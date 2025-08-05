@@ -55,13 +55,6 @@ module.exports = {
 
 		var insignias = await instance.getInsignias(data.handle)
 
-		if (insignias.length > 0) {
-			embed.addFields({
-				name: "Insígnias",
-				value: insignias.join(", "),
-			})
-		}
-
 		const embed = instance
 			.createEmbed(colors[data.rank ?? "newbie"])
 			.setTitle(`${data.handle}` + nome)
@@ -91,6 +84,13 @@ module.exports = {
 					data.registrationTimeSeconds * 1000
 				).toLocaleDateString()}\nby Falcão ❤️`,
 			})
+
+		if (insignias.length > 0) {
+			embed.addFields({
+				name: "Insígnias",
+				value: insignias.join(", "),
+			})
+		}
 
 		await interaction.editReply({
 			embeds: [embed],
