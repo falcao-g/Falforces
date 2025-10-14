@@ -8,14 +8,13 @@ module.exports = {
 		.setDescriptionLocalizations({
 			"pt-BR": "Veja algumas estatísticas do bot",
 			"es-ES": "Mira algunas estadísticas del bot",
-		})
-		.setDMPermission(false),
+		}),
 	execute: async ({ client, interaction, instance }) => {
 		await interaction.deferReply().catch(() => {})
 		try {
 			const embed = instance.createEmbed(3426654).addFields({
 				name: "Falforces",
-				value: `:house: Servidores: ${client.guilds.cache.size}\n:zap: Online por: *${msToTime(client.uptime)}*`,
+				value: `:house: Servidores: ${client.guilds.cache.size}\n:zap: Online por: ${msToTime(client.uptime)}`,
 			})
 			await instance.editReply(interaction, { embeds: [embed] })
 		} catch (error) {
