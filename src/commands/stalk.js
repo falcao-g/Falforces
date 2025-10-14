@@ -14,40 +14,12 @@ module.exports = {
 			const user = interaction.options.getString("voce")
 			const friend = interaction.options.getString("usuario")
 
-			var profile = await fetch(`https://codeforces.com/api/user.info?handles=${user}&checkHistoricHandles=false`, {
-				method: "GET",
-			})
-
-			profile = await profile.json()
-			profile = profile.result[0]
-
-			var friend_profile = await fetch(
-				`https://codeforces.com/api/user.info?handles=${friend}&checkHistoricHandles=false`,
-				{
-					method: "GET",
-				}
-			)
-
-			friend_profile = await friend_profile.json()
-			friend_profile = friend_profile.result[0]
-
-			var submissoes = await fetch(`https://codeforces.com/api/user.status?handle=${user}&from=1&count=1000000`, {
-				method: "GET",
-			})
-
-			submissoes = await submissoes.json()
-			submissoes = submissoes.result
-
-			request_amigo = await fetch(`https://codeforces.com/api/user.status?handle=${friend}&from=1&count=1000000`, {
-				method: "GET",
-			})
-
-			submissoes_amigo = await request_amigo.json()
-			submissoes_amigo = submissoes_amigo.result
+			let profile = await instance.loadUser(user, "codeforces")
+			let friend_profile = await instance.loadUser(friend, "codeforces")
 
 			const solvedProblems = new Set()
 
-			submissoes.forEach((submissao) => {
+			profile.submissions.forEach((submissao) => {
 				if (submissao.verdict === "OK") {
 					solvedProblems.add(submissao.problem.name)
 				}
@@ -55,7 +27,7 @@ module.exports = {
 
 			const diff = new Set()
 			const without = []
-			submissoes_amigo.every((submissao) => {
+			friend_profile.submissions.every((submissao) => {
 				if (submissao.verdict === "OK") {
 					if (!solvedProblems.has(submissao.problem.name)) {
 						var temp = diff.size

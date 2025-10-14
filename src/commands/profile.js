@@ -4,7 +4,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("perfil")
 		.setDescription("Acesse informações como rating, problemas resolvidos e mais de um usuário do codeforces")
-		.setDMPermission(false)
 		.addStringOption((string) =>
 			string.setName("usuario").setDescription("Nome do usuário no codeforces").setRequired(true)
 		),
@@ -13,62 +12,11 @@ module.exports = {
 			await interaction.deferReply().catch(() => {})
 			const user = interaction.options.getString("usuario")
 
-			var request = await fetch(`https://codeforces.com/api/user.info?handles=${user}&checkHistoricHandles=false`, {
-				method: "GET",
-			})
-
-			var data = await request.json()
-			data = data.result[0]
-
-			request = await fetch(`https://codeforces.com/api/user.status?handle=${user}&from=1&count=1000000`, {
-				method: "GET",
-			})
-
-			submissoes = await request.json()
-			submissoes = submissoes.result
-
-			const triedProblems = new Set()
-			const contests = new Set()
-			const solvedProblems = new Set()
-			const favoriteTags = new Map()
-
-			var hardestSolvedRating = 0
-			var hardestSolved = ``
-			submissoes.forEach((submissao) => {
-				triedProblems.add(submissao.problem.name)
-
-				if (submissao.verdict === "OK") {
-					solvedProblems.add(submissao.problem.name)
-
-					if (submissao.problem.rating > hardestSolvedRating) {
-						hardestSolved = `${submissao.problem.name} | ${submissao.problem.rating}`
-						hardestSolvedRating = submissao.problem.rating
-					}
-
-					submissao.problem.tags.forEach((tag) => {
-						if (favoriteTags.has(tag)) {
-							favoriteTags.set(tag, favoriteTags.get(tag) + 1)
-						} else {
-							favoriteTags.set(tag, 1)
-						}
-					})
-				}
-
-				if (submissao.author.participantType === "CONTESTANT") {
-					contests.add(submissao.contestId)
-				}
-			})
-			data.triedCount = triedProblems.size
-			data.solvedCount = solvedProblems.size
-			data.hardestSolved = hardestSolved
-			data.contestCount = contests.size
-			data.tags = Array.from(favoriteTags).sort((a, b) => b[1] - a[1])
-			data.submissionCount = submissoes.length
+			let data = await instance.loadUser(user, "codeforces")
 
 			const colors = {
 				newbie: "#808080",
-				pupil: "#88CC23",
-				apprentice: "#008002",
+				pupil: "#008002",
 				specialist: "#05A89F",
 				expert: "#0000FF",
 				"candidate master": "#AA01AA",
@@ -102,6 +50,7 @@ module.exports = {
 			estatisticas += `🏆 Contests participados: ${data.contestCount}\n`
 			estatisticas +=
 				data.solvedCount > 0 ? `🏷️ Tags favoritas: ${data.tags[0][0]}, ${data.tags[1][0]}, ${data.tags[2][0]}\n` : ""
+			estatisticas += `🌐 Linguagem mais usada: ${data.topLanguage}\n`
 			estatisticas += `🖥️ Número de submissões: ${data.submissionCount}`
 
 			var insignias = await instance.getInsignias(data.handle)
@@ -147,7 +96,7 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
-			console.error(`perfil: ${error}`)
+			console.error(`profile: ${error}`)
 			interaction.editReply({
 				content: instance.getMessage(interaction, "EXCEPTION"),
 			})
