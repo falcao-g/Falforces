@@ -1,10 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("convite")
-		.setDescription("Gostou do Falforces? Adicione-o ao seu servidor!")
-		.setDMPermission(false),
+	data: new SlashCommandBuilder().setName("convite").setDescription("Gostou do Falforces? Adicione-o ao seu servidor!"),
 	execute: async ({ interaction, instance }) => {
 		await interaction.deferReply().catch(() => {})
 		try {

@@ -4,7 +4,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("stalkear")
 		.setDescription("Veja os últimos problemas que seu amigo resolveu sem você no codeforces")
-		.setDMPermission(false)
 		.addStringOption((string) => string.setName("voce").setDescription("Seu nome no codeforces").setRequired(true))
 		.addStringOption((string) =>
 			string.setName("usuario").setDescription("Nome do seu amigo no codeforces").setRequired(true)
