@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require("discord.js")
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("parar")
-		.setDescription("Use esse comando para parar de receber notificações sobre contests"),
+		.setDescription("Use esse comando para parar de receber notificações sobre contests")
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async ({ interaction, instance }) => {
 		try {
 			await interaction.deferReply()

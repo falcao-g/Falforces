@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js")
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,7 +6,8 @@ module.exports = {
 		.setDescription("Use esse comando para ser avisado sobre contests futuros do Codeforces")
 		.addChannelOption((channel) =>
 			channel.setName("canal").setDescription("Canal onde você deseja receber as notificações").setRequired(true)
-		),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async ({ interaction, instance }) => {
 		try {
 			await interaction.deferReply()
