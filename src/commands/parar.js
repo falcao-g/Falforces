@@ -18,7 +18,7 @@ module.exports = {
 
 			const embed = await instance
 				.createEmbed("#551976")
-				.setTitle(`:mega: Notificações Desativadas!`)
+				.setTitle(`:no_bell: Notificações Desativadas!`)
 				.setDescription(`Você não receberá mais notificações sobre contests do Codeforces.`)
 			await interaction.editReply({
 				embeds: [embed],

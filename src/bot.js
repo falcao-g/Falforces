@@ -61,7 +61,7 @@ class Bot {
 			const notifyContests = async () => {
 				for (const contest of this.upcomingContests) {
 					const timeRemaining = contest.startTimeSeconds * 1000 - Date.now()
-					if (timeRemaining <= 1000 * 60 * 60 * 48) {
+					if (timeRemaining <= 1000 * 60 * 60 * 24) {
 						if (!contest.reminded1day) {
 							contest.reminded1day = true
 						} else if (timeRemaining <= 1000 * 60 * 60 * 1 && !contest.reminded1hour) {

@@ -23,7 +23,7 @@ module.exports = {
 
 			const embed = await instance
 				.createEmbed("#551976")
-				.setTitle(`:mega: Notificações Ativadas!`)
+				.setTitle(`:bell: Notificações Ativadas!`)
 				.setDescription(
 					`Você receberá notificações um dia e uma hora antes de cada contest do Codeforces no canal ${channel}`
 				)
