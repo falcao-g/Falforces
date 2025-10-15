@@ -11,10 +11,12 @@ class Bot {
 	_contests = require("./utils/json/contests.json")
 	userSchema = require("./schemas/user")
 	profileSchema = require("./schemas/profile")
+	guildSchema = require("./schemas/guild")
 	client = new Client({
 		shards: "auto",
 		intents: [GatewayIntentBits.Guilds],
 	})
+	upcomingContests = new Set()
 
 	constructor() {
 		this.client.on("ready", () => {
@@ -41,6 +43,62 @@ class Bot {
 
 		this.client.login(process.env.TOKEN)
 		this.databaseHandler.connect(process.env.MONGODB_URI)
+
+		this.client.on("ready", async () => {
+			const fetchContests = async () => {
+				const response = await fetch("https://codeforces.com/api/contest.list")
+				const data = await response.json()
+				const contests = data.result.filter((contest) => contest.phase === "BEFORE")
+
+				for (const contest of contests) {
+					contest.reminded1day = false
+					contest.reminded1hour = false
+					this.upcomingContests.add(contest)
+				}
+				console.log("fetched contests")
+			}
+
+			const notifyContests = async () => {
+				for (const contest of this.upcomingContests) {
+					const timeRemaining = contest.startTimeSeconds * 1000 - Date.now()
+					if (timeRemaining <= 1000 * 60 * 60 * 48) {
+						if (!contest.reminded1day) {
+							contest.reminded1day = true
+						} else if (timeRemaining <= 1000 * 60 * 60 * 1 && !contest.reminded1hour) {
+							contest.reminded1hour = true
+						} else {
+							this.upcomingContests.delete(contest)
+							continue
+						}
+
+						console.log("i will try to inform about contest:", contest.name)
+						const guilds = await this.guildSchema.find({ notificationChannel: { $ne: null } })
+						guilds.forEach(async (guild) => {
+							var notificationChannel = guild.notificationChannel
+							guild = await this.client.guilds.fetch(guild.id)
+							const channel = guild.channels.cache.get(notificationChannel)
+							if (channel) {
+								const embed = this.createEmbed("#C12127")
+									.setTitle(`${contest.name}`)
+									.setDescription(
+										`O contest vai começar <t:${contest.startTimeSeconds}:R>!\n\n**Início:** <t:${
+											contest.startTimeSeconds
+										}:F>\n**Duração:** ${contest.durationSeconds / 60 / 60} horas\n**Tipo:** ${contest.type}`
+									)
+									.setURL(`https://codeforces.com/contests/${contest.id}`)
+
+								channel.send({ embeds: [embed] })
+							}
+						})
+					}
+				}
+			}
+
+			await fetchContests()
+			await notifyContests()
+			setInterval(fetchContests, 1000 * 60 * 60 * 3)
+			setInterval(notifyContests, 1000 * 60 * 30)
+		})
 	}
 
 	getMessage(interaction, messageId, args = {}) {
