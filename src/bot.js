@@ -81,7 +81,7 @@ class Bot {
 								const embed = this.createEmbed("#C12127")
 									.setTitle(`${contest.name}`)
 									.setDescription(
-										`O contest vai começar <t:${contest.startTimeSeconds}:R>!\n\n**Início:** <t:${
+										`O contest vai começar <t:${contest.startTimeSeconds}:R>! :balloon:\n\n**Início:** <t:${
 											contest.startTimeSeconds
 										}:F>\n**Duração:** ${contest.durationSeconds / 60 / 60} horas\n**Tipo:** ${contest.type}`
 									)
