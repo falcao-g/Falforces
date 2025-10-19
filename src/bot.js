@@ -3,7 +3,8 @@ const { loadEvents } = require("./handlers/eventsHandler.js")
 const { loadCommands } = require("./handlers/commandsHandler.js")
 require("dotenv").config()
 const TEN_MINUTES = 10 * 60 * 1000
-
+const ONE_HOUR = 60 * 60 * 1000
+const ONE_DAY = 24 * 60 * 60 * 1000
 class Bot {
 	config = require("./config.json")
 	databaseHandler = require("./handlers/databaseHandler")
@@ -11,10 +12,12 @@ class Bot {
 	_contests = require("./utils/json/contests.json")
 	userSchema = require("./schemas/user")
 	profileSchema = require("./schemas/profile")
+	guildSchema = require("./schemas/guild")
 	client = new Client({
 		shards: "auto",
 		intents: [GatewayIntentBits.Guilds],
 	})
+	upcomingContests = new Map()
 
 	constructor() {
 		this.client.on("ready", () => {
@@ -41,6 +44,105 @@ class Bot {
 
 		this.client.login(process.env.TOKEN)
 		this.databaseHandler.connect(process.env.MONGODB_URI)
+
+		this.client.on("ready", async () => {
+			const fetchContests = async () => {
+				const response = await fetch("https://codeforces.com/api/contest.list")
+				const data = await response.json()
+
+				for (const contest of data.result) {
+					if (!this.upcomingContests.has(contest.id) && contest.phase === "BEFORE") {
+						contest.reminded1day = false
+						contest.reminded1hour = false
+						this.upcomingContests.set(contest.id, contest)
+					}
+				}
+				console.log("fetched contests")
+			}
+
+			let schedulerTimeoutId = null
+
+			const processContests = async () => {
+				if (schedulerTimeoutId) {
+					clearTimeout(schedulerTimeoutId)
+					schedulerTimeoutId = null
+				}
+				let timeToNextContest = null
+
+				for (const [id, contest] of this.upcomingContests) {
+					if (!contest.startTimeSeconds) {
+						this.upcomingContests.delete(id)
+						continue
+					}
+
+					const timeRemaining = contest.startTimeSeconds * 1000 - Date.now()
+					if (timeRemaining <= 0 || (contest.reminded1day && contest.reminded1hour)) {
+						this.upcomingContests.delete(id)
+						continue
+					}
+
+					if (!timeToNextContest || timeRemaining < timeToNextContest) {
+						timeToNextContest = timeRemaining
+					}
+
+					if (timeRemaining <= ONE_HOUR && !contest.reminded1hour) {
+						contest.reminded1hour = true
+						await sendReminder(contest)
+					} else if (timeRemaining <= ONE_DAY && !contest.reminded1day) {
+						contest.reminded1day = true
+						await sendReminder(contest)
+					}
+				}
+
+				if (!timeToNextContest) {
+					const DEFAULT_CHECK = 30 * 60 * 1000
+					schedulerTimeoutId = setTimeout(processContests, DEFAULT_CHECK)
+					return
+				}
+
+				let nextWakeMs
+				if (timeToNextContest > ONE_DAY) {
+					nextWakeMs = timeToNextContest - ONE_DAY
+				} else if (timeToNextContest > ONE_HOUR) {
+					nextWakeMs = timeToNextContest - ONE_HOUR
+				} else {
+					nextWakeMs = Math.min(30 * 1000, timeToNextContest)
+				}
+
+				nextWakeMs = Math.max(0, Math.floor(nextWakeMs))
+				schedulerTimeoutId = setTimeout(processContests, nextWakeMs)
+			}
+
+			const sendReminder = async (contest) => {
+				console.log("i will try to inform about contest:", contest)
+				const guilds = await this.guildSchema.find({ notificationChannel: { $ne: null } })
+				guilds.forEach(async (guild) => {
+					try {
+						var notificationChannel = guild.notificationChannel
+						guild = await this.client.guilds.fetch(guild.id)
+						const channel = guild.channels.cache.get(notificationChannel)
+						if (channel) {
+							const embed = this.createEmbed("#C12127")
+								.setTitle(`${contest.name}`)
+								.setDescription(
+									`O contest vai começar <t:${contest.startTimeSeconds}:R>! :balloon:\n\n**Início:** <t:${
+										contest.startTimeSeconds
+									}:F>\n**Duração:** ${contest.durationSeconds / 60 / 60} horas\n**Tipo:** ${contest.type}`
+								)
+								.setURL(`https://codeforces.com/contests/${contest.id}`)
+
+							channel.send({ embeds: [embed] })
+						}
+					} catch (err) {
+						console.error("Error notifying contest:", err)
+					}
+				})
+			}
+
+			await fetchContests()
+			await processContests()
+			setInterval(fetchContests, 1000 * 60 * 60 * 3)
+		})
 	}
 
 	getMessage(interaction, messageId, args = {}) {
