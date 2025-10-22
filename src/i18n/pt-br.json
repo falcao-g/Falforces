@@ -1,0 +1,71 @@
+{
+  "commands": {
+    "botinfo": {
+        "response": ":house: Servidores: {SERVIDORES}\n:zap: Uptime: {TEMPO}"
+    },
+    "contest": {
+      "embed": {
+        "title": ":bell: Notificações Ativadas!",
+        "description": "Você receberá notificações um dia e uma hora antes de cada contest do Codeforces no canal {CANAL}",
+        "field_value": "**Para desativar as notificações, use o comando `/parar`**"
+      }
+    },
+    "convite": {
+      "response": ":pushpin: Adicione o Falforces agora mesmo no seu servidor e vire um mestre da programação competitiva: [Clique Aqui](https://discord.com/oauth2/authorize?client_id=1348139773658796073)"
+    },
+    "match": {
+      "no_matches": "Nenhuma tag relevante em comum",
+      "embed": {
+        "title": ":heart_hands: Match de estilo algorítmico: {USER1} × {USER2}",
+        "description": "Baseado em **todas as submissões**",
+        "field_similarity": "Similaridade",
+        "field_top_tags": ":label: Principais tags em comum"
+      }
+    },
+    "parar": {
+      "embed": {
+        "title": ":no_bell: Notificações Desativadas!",
+        "description": "Você não receberá mais notificações sobre contests do Codeforces."
+      }
+    },
+    "ping": {
+      "response": ":ping_pong: Pong! O ping do bot é de {PING}ms."
+    },
+    "profile": {
+      "country": "🗺️ País: {PAIS}\n",
+      "city": "🏙️ Cidade: {CIDADE}\n",
+      "organization": "🏛️ Organização: {ORGANIZATION}\n",
+      "friends": "⭐ Número de amigos: {FRIENDS}\n",
+      "contribution": "✍️ Contribuição: {CONTRIBUTION}",
+      "tries": "🧠 Problemas tentados: {TRIES}\n",
+      "solved": "🎈 Problemas resolvidos: {SOLVED}\n",
+      "hardest": "🔥 Problema mais difícil: {HARDEST}\n",
+      "contests": "🏆 Contests participados: {CONTESTS}\n",
+      "tags": "🏷️ Tags favoritas: {TAG1}, {TAG2}, {TAG3}\n",
+      "top_language": "🌐 Linguagem mais usada: {TOP_LANGUAGE}\n",
+      "submissions": "🖥️ Número de submissões: {SUBMISSIONS}",
+      "embed": {
+        "description": "🚀 Rating atual: {RATING} | Máximo: {MAXRATING}\n👑 Rank atual: {RANK} | Máximo: {MAXRANK}",
+        "footer": "📸 Visto por último em: {LAST_SEEN} | 📋 Registrado em: {REGISTERED}"
+      }
+    },
+    "stalk": {
+      "response_diff": "Últimos problemas que {AMIGO} fez sem você... :worried:",
+      "response_none": "{AMIGO} não fez nenhum problema sem você, wow! :heart_hands:"
+    }
+  },
+  "events": {
+    "contest_notification": "O contest vai começar {TEMPO}! :balloon:\n\n**Início:** {INICIO}\n**Duração:** {DURACAO} horas\n**Tipo:** {TIPO}"
+  },
+  "words": {
+    "estatisticas": "Estatísticas",
+    "informacoes": "Informações",
+    "insignias": "Insígnias",
+    "problemas": "Problemas"
+  },
+  "errors": {
+    "bot": "Você não pode usar os comandos do Falbot porque você é um bot",
+    "restricted": "Apenas o desenvolvedor do bot pode executar este comando.",
+    "exception": "Ocorreu um erro ao executar este comando! Este erro foi relatado ao desenvolvedor."
+  }
+}
