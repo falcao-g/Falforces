@@ -7,12 +7,12 @@ module.exports = {
 		.addStringOption((string) =>
 			string.setName("usuario").setDescription("Nome do usuário no codeforces").setRequired(true)
 		),
-	execute: async ({ interaction, instance }) => {
+	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
 			const user = interaction.options.getString("usuario")
 
-			let data = await instance.loadUser(user, "codeforces")
+			let data = await bot.loadUser(user, "codeforces")
 
 			const colors = {
 				newbie: "#808080",
@@ -37,57 +37,73 @@ module.exports = {
 			}
 
 			var informacoes = ``
-			informacoes += data.country != undefined ? `🗺️ País: ${data.country}\n` : ""
-			informacoes += data.city != undefined ? `🏙️ Cidade: ${data.city}\n` : ""
-			informacoes += data.organization != undefined ? `🏛️ Organização: ${data.organization}\n` : ""
-			informacoes += `⭐ Número de amigos: ${data.friendOfCount}\n`
-			informacoes += `✍️ Contribuição: ${data.contribution}`
+			informacoes +=
+				data.country != undefined ? bot.i18n.get(interaction, "commands.profile.country", { PAIS: data.country }) : ""
+			informacoes +=
+				data.city != undefined ? bot.i18n.get(interaction, "commands.profile.city", { CIDADE: data.city }) : ""
+			informacoes +=
+				data.organization != undefined
+					? bot.i18n.get(interaction, "commands.profile.organization", { ORGANIZATION: data.organization })
+					: ""
+			informacoes += bot.i18n.get(interaction, "commands.profile.friends", { FRIENDS: data.friendOfCount })
+			informacoes += bot.i18n.get(interaction, "commands.profile.contribution", { CONTRIBUTION: data.contribution })
 
 			var estatisticas = ``
-			estatisticas += `🧠 Problemas tentados: ${data.triedCount}\n`
-			estatisticas += `🎈 Problemas resolvidos: ${data.solvedCount}\n`
-			estatisticas += data.solvedCount > 0 ? `🔥 Problema mais difícil: ${data.hardestSolved}\n` : ""
-			estatisticas += `🏆 Contests participados: ${data.contestCount}\n`
+			estatisticas += bot.i18n.get(interaction, "commands.profile.tries", { TRIES: data.triedCount })
+			estatisticas += bot.i18n.get(interaction, "commands.profile.solved", { SOLVED: data.solvedCount })
 			estatisticas +=
-				data.solvedCount > 0 ? `🏷️ Tags favoritas: ${data.tags[0][0]}, ${data.tags[1][0]}, ${data.tags[2][0]}\n` : ""
-			estatisticas += `🌐 Linguagem mais usada: ${data.topLanguage}\n`
-			estatisticas += `🖥️ Número de submissões: ${data.submissionCount}`
+				data.solvedCount > 0
+					? bot.i18n.get(interaction, "commands.profile.hardest", { HARDEST: data.hardestSolved })
+					: ""
+			estatisticas += bot.i18n.get(interaction, "commands.profile.contests", { CONTESTS: data.contestCount })
+			estatisticas +=
+				data.solvedCount > 0
+					? bot.i18n.get(interaction, "commands.profile.tags", {
+							TAG1: data.tags[0][0],
+							TAG2: data.tags[1][0],
+							TAG3: data.tags[2][0],
+					  })
+					: ""
+			estatisticas += bot.i18n.get(interaction, "commands.profile.top_language", { TOP_LANGUAGE: data.topLanguage })
+			estatisticas += bot.i18n.get(interaction, "commands.profile.submissions", { SUBMISSIONS: data.submissionCount })
 
-			var insignias = await instance.getInsignias(data.handle)
+			var insignias = await bot.getInsignias(data.handle)
 
-			const embed = instance
+			const embed = bot
 				.createEmbed(colors[data.rank ?? "newbie"])
 				.setTitle(`${data.handle}` + nome)
 				.setDescription(
-					`🚀 Rating atual: ${data.rating ?? 0} | Máximo: ${data.maxRating ?? 0}\n👑 Rank atual: ${
-						data.rank ?? "newbie"
-					} | Máximo: ${data.maxRank ?? "newbie"}`
+					bot.i18n.get(interaction, "commands.profile.embed.description", {
+						RANK: data.rank ?? "newbie",
+						MAXRANK: data.maxRank ?? "newbie",
+						RATING: data.rating ?? "0",
+						MAXRATING: data.maxRating ?? "0",
+					})
 				)
 				.setThumbnail(data.titlePhoto)
 				.addFields(
 					{
-						name: "Estatísticas",
+						name: bot.i18n.get(interaction, "words.estatisticas"),
 						value: estatisticas,
 						inline: true,
 					},
 					{
-						name: "Informações",
+						name: bot.i18n.get(interaction, "words.informacoes"),
 						value: informacoes,
 						inline: true,
 					}
 				)
 				.setFooter({
-					text: `
-							📸 Visto por último em: ${new Date(
-								data.lastOnlineTimeSeconds * 1000
-							).toLocaleDateString()} | 📋 Registrado em: ${new Date(
-						data.registrationTimeSeconds * 1000
-					).toLocaleDateString()}\nby Falcão ❤️`,
+					text:
+						bot.i18n.get(interaction, "commands.profile.embed.footer", {
+							LAST_SEEN: new Date(data.lastOnlineTimeSeconds * 1000).toLocaleDateString(),
+							REGISTERED: new Date(data.registrationTimeSeconds * 1000).toLocaleDateString(),
+						}) + "\nby Falcão ❤️",
 				})
 
 			if (insignias.length > 0) {
 				embed.addFields({
-					name: "Insígnias",
+					name: bot.i18n.get(interaction, "words.insignias"),
 					value: insignias.join(", "),
 				})
 			}
@@ -98,7 +114,7 @@ module.exports = {
 		} catch (error) {
 			console.error(`profile: ${error}`)
 			interaction.editReply({
-				content: instance.getMessage(interaction, "EXCEPTION"),
+				content: bot.i18n.get(interaction, "errors.exception"),
 			})
 		}
 	},

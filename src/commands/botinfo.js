@@ -4,23 +4,27 @@ const { SlashCommandBuilder } = require("discord.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("botinfo")
-		.setDescription("Check some bot stats")
+		.setDescription("Veja algumas estatísticas do bot")
 		.setDescriptionLocalizations({
-			"pt-BR": "Veja algumas estatísticas do bot",
+			"en-US": "Check some bot stats",
 			"es-ES": "Mira algunas estadísticas del bot",
 		}),
-	execute: async ({ client, interaction, instance }) => {
+	execute: async ({ client, interaction, bot }) => {
 		await interaction.deferReply().catch(() => {})
 		try {
-			const embed = instance.createEmbed(3426654).addFields({
+			const embed = bot.createEmbed(3426654).addFields({
 				name: "Falforces",
-				value: `:house: Servidores: ${client.guilds.cache.size}\n:zap: Online por: ${msToTime(client.uptime)}`,
+				value: bot.i18n.get(interaction, "commands.botinfo.response", {
+					SERVIDORES: client.guilds.cache.size,
+					TEMPO: msToTime(client.uptime),
+				}),
+				inline: false,
 			})
-			await instance.editReply(interaction, { embeds: [embed] })
+			await bot.editReply(interaction, { embeds: [embed] })
 		} catch (error) {
 			console.error(`botinfo: ${error}`)
-			instance.editReply(interaction, {
-				content: instance.getMessage(interaction, "EXCEPTION"),
+			bot.editReply(interaction, {
+				content: bot.i18n.get(interaction, "errors.exception"),
 				embeds: [],
 			})
 		}

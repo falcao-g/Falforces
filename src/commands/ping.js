@@ -1,19 +1,21 @@
 const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
-	data: new SlashCommandBuilder().setName("ping").setDescription("Verifica o ping do bot").setDMPermission(false),
-	execute: async ({ interaction, instance }) => {
+	data: new SlashCommandBuilder().setName("ping").setDescription("Verifica o ping do bot").setDescriptionLocalizations({
+		"en-US": "Check the bot's ping",
+		"es-ES": "Verifica el ping del bot",
+	}),
+	execute: async ({ interaction, bot }) => {
 		try {
-			// i recommend always deferring the reply so you have more time to answer
 			await interaction.deferReply().catch(() => {})
 
-			answer = await instance.editReply(interaction, {
-				content: `Pong! ${instance.client.ws.ping}ms`,
+			answer = await bot.editReply(interaction, {
+				content: bot.i18n.get(interaction, "commands.ping.response", { PING: bot.client.ws.ping }),
 			})
 		} catch (error) {
 			console.error(`ping: ${error}`)
-			instance.editReply(interaction, {
-				content: instance.getMessage(interaction, "EXCEPTION"),
+			bot.editReply(interaction, {
+				content: bot.i18n.get(interaction, "errors.exception"),
 			})
 		}
 	},

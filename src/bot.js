@@ -126,9 +126,12 @@ class Bot {
 							const embed = this.createEmbed("#C12127")
 								.setTitle(`${contest.name}`)
 								.setDescription(
-									`O contest vai começar <t:${contest.startTimeSeconds}:R>! :balloon:\n\n**Início:** <t:${
-										contest.startTimeSeconds
-									}:F>\n**Duração:** ${contest.durationSeconds / 60 / 60} horas\n**Tipo:** ${contest.type}`
+									this.i18n.get(null, "events.contest_notification", {
+										TEMPO: `<t:${contest.startTimeSeconds}:R>`,
+										INICIO: `<t:${contest.startTimeSeconds}:F>`,
+										DURACAO: contest.durationSeconds / 3600,
+										TIPO: contest.type,
+									})
 								)
 								.setURL(`https://codeforces.com/contests/${contest.id}`)
 
