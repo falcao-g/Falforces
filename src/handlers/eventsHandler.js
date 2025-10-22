@@ -1,4 +1,4 @@
-async function loadEvents(instance, client) {
+async function loadEvents(bot, client) {
 	const { loadFiles } = require("../utils/fileLoader")
 
 	await client.events.clear()
@@ -8,7 +8,7 @@ async function loadEvents(instance, client) {
 	Files.forEach((file) => {
 		const event = require(file)
 
-		const execute = (...args) => event.execute(...args, instance, client)
+		const execute = (...args) => event.execute(...args, bot, client)
 		client.events.set(event.name, execute)
 
 		if (event.once) {

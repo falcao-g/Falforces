@@ -1,9 +1,9 @@
 module.exports = {
 	name: "interactionCreate",
-	execute: async (interaction, instance, client) => {
+	execute: async (interaction, bot, client) => {
 		if (interaction.user.bot) {
 			interaction.reply({
-				content: instance.getMessage(interaction, "YOU_ARE_BOT"),
+				content: bot.getMessage(interaction, "YOU_ARE_BOT"),
 				ephemeral: true,
 			})
 			return
@@ -17,16 +17,16 @@ module.exports = {
 				// here we check if the user is on cooldown
 			}
 
-			if (command.developer && !instance.config.devs.includes(interaction.user.id)) {
+			if (command.developer && !bot.config.devs.includes(interaction.user.id)) {
 				return interaction.reply({
-					content: instance.getMessage(interaction, "BOT_OWNERS_ONLY"),
+					content: bot.getMessage(interaction, "BOT_OWNERS_ONLY"),
 					ephemeral: true,
 				})
 			}
 
 			command.execute({
 				interaction,
-				instance,
+				bot,
 				client,
 				member: interaction.member,
 				guild: interaction.guild,
@@ -36,7 +36,7 @@ module.exports = {
 		} else if (interaction.isAutocomplete()) {
 			// this handles autocompletes for slash commands
 			const command = client.commands.get(interaction.commandName)
-			command.autocomplete({ client, interaction, instance })
+			command.autocomplete({ client, interaction, bot })
 		} else if (interaction.isButton()) {
 			// i recommend that you make your buttons custom id's like this: <commandName> <subcommand> <args>
 			// so you can easily create a button that interacts with a specific command and subcommand with args
@@ -57,7 +57,7 @@ module.exports = {
 
 			await command.execute({
 				interaction,
-				instance,
+				bot,
 				client,
 				member: interaction.member,
 				guild: interaction.guild,
@@ -73,7 +73,7 @@ module.exports = {
 			await command.execute({
 				guild: interaction.guild,
 				interaction,
-				instance,
+				bot,
 				member: interaction.member,
 				client,
 				user: interaction.user,
