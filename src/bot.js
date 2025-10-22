@@ -146,24 +146,6 @@ class Bot {
 		})
 	}
 
-	getMessage(interaction, messageId, args = {}) {
-		const message = this._messages[messageId]
-		if (!message) {
-			console.error(`Could not find the correct message to send for "${messageId}"`)
-			return "Could not find the correct message to send. Please report this to the bot developer."
-		}
-
-		const locale = interaction.locale ?? "pt-BR"
-		let result = message[locale] ?? message["en-US"]
-
-		for (const key of Object.keys(args)) {
-			const expression = new RegExp(`{${key}}`, "g")
-			result = result.replace(expression, args[key])
-		}
-
-		return result
-	}
-
 	async editReply(interaction, { content, embeds, components, fetchReply = false }) {
 		return await interaction
 			.editReply({
