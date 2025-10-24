@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityType } = require("discord.js")
 const { loadEvents } = require("./handlers/eventsHandler.js")
 const { loadCommands } = require("./handlers/commandsHandler.js")
+const I18n = require("./handlers/i18n.js")
 require("dotenv").config()
 const TEN_MINUTES = 10 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
@@ -8,7 +9,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000
 class Bot {
 	config = require("./config.json")
 	databaseHandler = require("./handlers/databaseHandler")
-	_messages = require("./utils/json/messages.json")
+	i18n = new I18n({ defaultLocale: "pt-BR" })
 	_contests = require("./utils/json/contests.json")
 	userSchema = require("./schemas/user")
 	profileSchema = require("./schemas/profile")
@@ -125,9 +126,12 @@ class Bot {
 							const embed = this.createEmbed("#C12127")
 								.setTitle(`${contest.name}`)
 								.setDescription(
-									`O contest vai começar <t:${contest.startTimeSeconds}:R>! :balloon:\n\n**Início:** <t:${
-										contest.startTimeSeconds
-									}:F>\n**Duração:** ${contest.durationSeconds / 60 / 60} horas\n**Tipo:** ${contest.type}`
+									this.i18n.get(null, "events.contest_notification", {
+										TEMPO: `<t:${contest.startTimeSeconds}:R>`,
+										INICIO: `<t:${contest.startTimeSeconds}:F>`,
+										DURACAO: contest.durationSeconds / 3600,
+										TIPO: contest.type,
+									})
 								)
 								.setURL(`https://codeforces.com/contests/${contest.id}`)
 
@@ -143,24 +147,6 @@ class Bot {
 			await processContests()
 			setInterval(fetchContests, 1000 * 60 * 60 * 3)
 		})
-	}
-
-	getMessage(interaction, messageId, args = {}) {
-		const message = this._messages[messageId]
-		if (!message) {
-			console.error(`Could not find the correct message to send for "${messageId}"`)
-			return "Could not find the correct message to send. Please report this to the bot developer."
-		}
-
-		const locale = interaction.locale ?? "pt-BR"
-		let result = message[locale] ?? message["en-US"]
-
-		for (const key of Object.keys(args)) {
-			const expression = new RegExp(`{${key}}`, "g")
-			result = result.replace(expression, args[key])
-		}
-
-		return result
 	}
 
 	async editReply(interaction, { content, embeds, components, fetchReply = false }) {

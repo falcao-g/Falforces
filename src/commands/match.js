@@ -4,21 +4,47 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("match")
 		.setDescription("Calcula a % de similaridade entre dois usuários do Codeforces")
+		.setDescriptionLocalizations({
+			"en-US": "Calculates the % of similarity between two Codeforces users",
+			"es-ES": "Calcula el % de similitud entre dos usuarios de Codeforces",
+		})
 		.addStringOption((string) =>
-			string.setName("primeiro").setDescription("Primeiro usuário do Codeforces").setRequired(true)
+			string
+				.setName("primeiro")
+				.setNameLocalizations({
+					"en-US": "first",
+					"es-ES": "primero",
+				})
+				.setDescription("Primeiro usuário do Codeforces")
+				.setDescriptionLocalizations({
+					"en-US": "First Codeforces user",
+					"es-ES": "Primer usuario de Codeforces",
+				})
+				.setRequired(true)
 		)
 		.addStringOption((string) =>
-			string.setName("segundo").setDescription("Segundo usuário do Codeforces").setRequired(true)
+			string
+				.setName("segundo")
+				.setNameLocalizations({
+					"en-US": "second",
+					"es-ES": "segundo",
+				})
+				.setDescription("Segundo usuário do Codeforces")
+				.setDescriptionLocalizations({
+					"en-US": "Second Codeforces user",
+					"es-ES": "Segundo usuario de Codeforces",
+				})
+				.setRequired(true)
 		),
-	execute: async ({ interaction, instance }) => {
+	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply()
 
 			const user1 = interaction.options.getString("primeiro")
 			const user2 = interaction.options.getString("segundo")
 
-			const p1 = await instance.loadUser(user1, "codeforces")
-			const p2 = await instance.loadUser(user2, "codeforces")
+			const p1 = await bot.loadUser(user1, "codeforces")
+			const p2 = await bot.loadUser(user2, "codeforces")
 
 			const tagFreq1 = {}
 			const tagFreq2 = {}
@@ -60,34 +86,30 @@ module.exports = {
 					.sort((a, b) => b.count - a.count)
 					.slice(0, 5)
 					.map((t) => t.tag)
-					.join(", ") || "Nenhuma tag relevante em comum"
+					.join(", ") || bot.i18n.get(interaction, "commands.match.no_matches")
+
+			const embed = await bot
+				.createEmbed("#e0b029")
+				.setTitle(bot.i18n.get(interaction, "commands.match.embed.title", { USER1: user1, USER2: user2 }))
+				.setDescription(bot.i18n.get(interaction, "commands.match.embed.description"))
+				.addFields([
+					{
+						name: bot.i18n.get(interaction, "commands.match.embed.field_similarity"),
+						value: `**${percentage.toFixed(2)}%**`,
+					},
+					{
+						name: bot.i18n.get(interaction, "commands.match.embed.field_top_tags"),
+						value: sharedTags,
+					},
+				])
 
 			await interaction.editReply({
-				embeds: [
-					{
-						title: `:heart_hands: Match de estilo algorítmico: ${user1} × ${user2}`,
-						description: `Baseado em **todas as submissões**`,
-						fields: [
-							{
-								name: "Similaridade",
-								value: `**${percentage.toFixed(2)}%**`,
-							},
-							{
-								name: ":label: Principais tags em comum",
-								value: sharedTags,
-							},
-						],
-						color: 0xe0b029,
-						footer: {
-							text: "by Falcão ❤️",
-						},
-					},
-				],
+				embeds: [embed],
 			})
 		} catch (error) {
 			console.error(`match: ${error}`)
 			interaction.editReply({
-				content: instance.getMessage(interaction, "EXCEPTION"),
+				content: bot.i18n.get(interaction, "errors.exception"),
 			})
 		}
 	},
