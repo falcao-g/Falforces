@@ -4,6 +4,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("perfil")
 		.setDescription("Acesse informações como rating, problemas resolvidos e mais de um usuário do codeforces")
+		.setDescriptionLocalizations({
+			"en-US": "Access information such as rating, solved problems and more of a codeforces user",
+			"es-ES": "Accede a información como calificación, problemas resueltos y más de un usuario de codeforces",
+		})
 		.addStringOption((string) =>
 			string.setName("usuario").setDescription("Nome do usuário no codeforces").setRequired(true)
 		),
