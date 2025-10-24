@@ -43,11 +43,15 @@
       "contests": "🏆 Contests participated: {CONTESTS}\n",
       "tags": "🏷️ Favorite tags: {TAG1}, {TAG2}, {TAG3}\n",
       "top_language": "🌐 Most used language: {TOP_LANGUAGE}\n",
-      "submissions": "🖥️ NNumber of submissions: {SUBMISSIONS}",
+      "submissions": "🖥️ Number of submissions: {SUBMISSIONS}",
       "embed": {
         "description": "🚀 Current rating: {RATING} | Max: {MAXRATING}\n👑 Current rank: {RANK} | Max: {MAXRANK}",
         "footer": "📸 Last seen on: {LAST_SEEN} | 📋 Registered on: {REGISTERED}"
       }
+    },
+    "stalk": {
+      "response_diff": "Last problems that {AMIGO} did without you... :worried:",
+      "response_none": "{AMIGO} didn't do any problems without you, wow! :heart_hands:"
     }
   },
   "events": {
@@ -56,7 +60,8 @@
   "words": {
     "estatisticas": "Statistics",
     "informacoes": "Information",
-    "insignias": "Badges"
+    "insignias": "Badges",
+    "problemas": "Problems"
   },
   "errors": {
     "bot": "You can't use Falbot's commands because you are a bot",
