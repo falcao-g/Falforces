@@ -6,25 +6,11 @@ module.exports = {
 		.setNameLocalizations({
 			"en-US": "stalk",
 		})
-		.setDescription("Veja os últimos problemas que seu amigo resolveu sem você no codeforces")
+		.setDescription("Veja os últimos problemas que seu amigo resolveu no codeforces")
 		.setDescriptionLocalizations({
-			"en-US": "See the latest problems your friend solved without you on codeforces",
-			"es-ES": "Vea los últimos problemas que su amigo resolvió sin usted en codeforces",
+			"en-US": "See the latest problems your friend solved on codeforces",
+			"es-ES": "Vea los últimos problemas que su amigo resolvió en codeforces",
 		})
-		.addStringOption((string) =>
-			string
-				.setName("voce")
-				.setNameLocalizations({
-					"en-US": "you",
-					"es-ES": "usted",
-				})
-				.setDescription("Seu nome no codeforces")
-				.setDescriptionLocalizations({
-					"en-US": "Your codeforces username",
-					"es-ES": "Su nombre de usuario en codeforces",
-				})
-				.setRequired(true)
-		)
 		.addStringOption((string) =>
 			string
 				.setName("usuario")
@@ -32,56 +18,36 @@ module.exports = {
 					"en-US": "user",
 					"es-ES": "usuario",
 				})
-				.setDescription("Nome do seu amigo no codeforces")
+				.setDescription("Handle do seu amigo no codeforces")
 				.setDescriptionLocalizations({
-					"en-US": "Your friend's codeforces username",
-					"es-ES": "El nombre de usuario de su amigo en codeforces",
+					"en-US": "Your friend's codeforces handle",
+					"es-ES": "El handle de su amigo en codeforces",
 				})
 				.setRequired(true)
 		),
 	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
-			const user = interaction.options.getString("voce")
 			const friend = interaction.options.getString("usuario")
+			let profile = await bot.loadUser(friend, "codeforces")
 
-			let profile = await bot.loadUser(user, "codeforces")
-			let friend_profile = await bot.loadUser(friend, "codeforces")
+			const solvedProblems = []
 
-			const solvedProblems = new Set()
-
-			profile.submissions.forEach((submissao) => {
+			profile.submissions.every((submissao) => {
 				if (submissao.verdict === "OK") {
-					solvedProblems.add(submissao.problem.name)
+					solvedProblems.push({
+						name: submissao.problem.name,
+						rating: submissao.problem.rating,
+						tags: submissao.problem.tags,
+						contestId: submissao.problem.contestId,
+						index: submissao.problem.index,
+					})
 				}
+
+				return solvedProblems.length < 6
 			})
 
-			const diff = new Set()
-			const without = []
-			friend_profile.submissions.every((submissao) => {
-				if (submissao.verdict === "OK") {
-					if (!solvedProblems.has(submissao.problem.name)) {
-						var temp = diff.size
-						diff.add(submissao.problem.name)
-						if (diff.size > temp) {
-							without.push({
-								name: submissao.problem.name,
-								rating: submissao.problem.rating,
-								tags: submissao.problem.tags,
-								contestId: submissao.problem.contestId,
-								index: submissao.problem.index,
-							})
-						}
-					}
-				}
-
-				if (without.length >= 6) {
-					return false
-				}
-				return true
-			})
-
-			if (without.length > 0) {
+			if (solvedProblems.length > 0) {
 				const emoji = {
 					1: ":one:",
 					2: ":two:",
@@ -92,7 +58,7 @@ module.exports = {
 				}
 
 				var index = 0
-				var problems = without.map((problem) => {
+				var problems = solvedProblems.map((problem) => {
 					index += 1
 					return `${emoji[index]} **[${problem.name}](https://codeforces.com/problemset/problem/${problem.contestId}/${
 						problem.index
@@ -101,12 +67,12 @@ module.exports = {
 
 				var embed = bot
 					.createEmbed("#551976")
-					.setTitle(bot.i18n.get(interaction, "commands.stalk.response_diff", { AMIGO: friend_profile.handle }))
+					.setTitle(bot.i18n.get(interaction, "commands.stalk.response", { AMIGO: profile.handle }))
 					.setAuthor({
 						name: profile.handle,
 						iconURL: profile.titlePhoto,
 					})
-					.setThumbnail(friend_profile.titlePhoto)
+					.setThumbnail(profile.titlePhoto)
 					.addFields({
 						name: bot.i18n.get(interaction, "words.problemas"),
 						value: problems.join("\n"),
@@ -114,12 +80,12 @@ module.exports = {
 			} else {
 				var embed = bot
 					.createEmbed("#551976")
-					.setTitle(bot.i18n.get(interaction, "commands.stalk.response_none", { AMIGO: friend_profile.handle }))
+					.setTitle(bot.i18n.get(interaction, "commands.stalk.response_none", { AMIGO: profile.handle }))
 					.setAuthor({
 						name: profile.handle,
 						iconURL: profile.titlePhoto,
 					})
-					.setThumbnail(friend_profile.titlePhoto)
+					.setThumbnail(profile.titlePhoto)
 			}
 
 			await interaction.editReply({

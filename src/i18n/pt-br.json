@@ -50,8 +50,8 @@
       }
     },
     "stalk": {
-      "response_diff": "Últimos problemas que {AMIGO} fez sem você... :worried:",
-      "response_none": "{AMIGO} não fez nenhum problema sem você, wow! :heart_hands:"
+      "response": "Últimos problemas que {AMIGO} fez... :telescope:",
+      "response_none": "{AMIGO} não fez nenhum problema ainda! :worried:"
     }
   },
   "events": {
