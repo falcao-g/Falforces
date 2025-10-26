@@ -1,30 +1,30 @@
-name: 🚀 Feature request
-description: Use this format to fill a feature request.
+name: 🚀 Sugestão/Ideia
+description: Use esse modelo para sugerir novas funcionalidades para o Falforces
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
-      value: '# Feature request'
+      value: "# Sugestão/Ideia"
 
   - type: textarea
     id: description
     attributes:
-      label: Feature description
+      label: Descrição da funcionalidade
     validations:
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: How to implement?
-      description: Have any idea how to implement this feature? Tell us!
+      label: Como implementar?
+      description: Tem alguma ideia de como implementar essa funcionalidade? Conte-nos!
     validations:
       required: false
 
   - type: textarea
     id: screenshot
     attributes:
-      label: Media, if applicable
-      description: Screenshot, GIF, video, etc.
+      label: Mídia, se aplicável
+      description: Captura de tela, GIF, vídeo, etc.
     validations:
       required: false

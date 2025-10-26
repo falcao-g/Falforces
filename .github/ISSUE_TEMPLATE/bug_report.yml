@@ -1,30 +1,30 @@
-name: 🐛 Bug report
-description: Use this format to fill a bug report.
+name: 🐛 Bug
+description: Use esse modelo para relatar bugs no Falforces
 labels: [bug]
 body:
   - type: markdown
     attributes:
-      value: '# Bug report'
+      value: "# Relatório de Bug"
 
   - type: textarea
     id: description
     attributes:
-      label: Description of the bug
+      label: Descrição do bug
     validations:
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
-      description: Tell us how to reproduce this bug or how you found it
+      label: Passos para reproduzir
+      description: Diga-nos como reproduzir esse bug ou como você o encontrou
     validations:
       required: true
 
   - type: textarea
     id: screenshot
     attributes:
-      label: Media, if necessary
-      description: Screenshot, GIF, video, etc.
+      label: Mídia, se necessário
+      description: Captura de tela, GIF, vídeo, etc.
     validations:
       required: false
