@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityType } = require("discord.js")
-const { loadEvents } = require("./handlers/eventsHandler.js")
-const { loadCommands } = require("./handlers/commandsHandler.js")
+const { loadEvents } = require("./handlers/events.js")
+const { loadCommands } = require("./handlers/commands.js")
 const I18n = require("./handlers/i18n.js")
 require("dotenv").config()
 const TEN_MINUTES = 10 * 60 * 1000
@@ -8,7 +8,7 @@ const ONE_HOUR = 60 * 60 * 1000
 const ONE_DAY = 24 * 60 * 60 * 1000
 class Bot {
 	config = require("./config.json")
-	databaseHandler = require("./handlers/databaseHandler")
+	databaseHandler = require("./handlers/database.js")
 	i18n = new I18n({ defaultLocale: "pt-BR" })
 	_contests = require("./utils/json/contests.json")
 	userSchema = require("./schemas/user")
