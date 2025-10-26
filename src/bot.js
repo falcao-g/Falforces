@@ -272,6 +272,14 @@ class Bot {
 			return user
 		}
 
+		var request = await fetch(`https://codeforces.com/api/user.info?handles=${handle}&checkHistoricHandles=false`, {
+			method: "GET",
+		})
+
+		if (!request.ok) {
+			throw new Error(`Failed to fetch user info: ${request.status} ${request.statusText}`)
+		}
+
 		if (!user) {
 			user = new this.profileSchema({
 				_id: `${platform}:${handle}`,

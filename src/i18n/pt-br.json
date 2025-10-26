@@ -65,6 +65,7 @@
     "problemas": "Problemas"
   },
   "errors": {
+    "handle_not_found": "🕵️🔎 Usuário com o handle `{HANDLE}` não encontrado no Codeforces",
     "bot": "Você não pode usar os comandos do Falbot porque você é um bot",
     "restricted": "Apenas o desenvolvedor do bot pode executar este comando.",
     "exception": "Ocorreu um erro ao executar este comando! Este erro foi relatado ao desenvolvedor."

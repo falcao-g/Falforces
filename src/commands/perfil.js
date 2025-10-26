@@ -16,7 +16,9 @@ module.exports = {
 			await interaction.deferReply().catch(() => {})
 			const user = interaction.options.getString("usuario")
 
-			let data = await bot.loadUser(user, "codeforces")
+			let data = await bot.loadUser(user, "codeforces").catch(async (error) => {
+				throw new Error("Usuário não encontrado", { cause: user })
+			})
 
 			const colors = {
 				newbie: "#808080",
@@ -117,6 +119,13 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
+			if (error.message === "Usuário não encontrado") {
+				return interaction.editReply({
+					content: bot.i18n.get(interaction, "errors.handle_not_found", {
+						HANDLE: error.cause,
+					}),
+				})
+			}
 			console.error(`perfil: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),

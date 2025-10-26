@@ -43,8 +43,12 @@ module.exports = {
 			const user1 = interaction.options.getString("primeiro")
 			const user2 = interaction.options.getString("segundo")
 
-			const p1 = await bot.loadUser(user1, "codeforces")
-			const p2 = await bot.loadUser(user2, "codeforces")
+			const p1 = await bot.loadUser(user1, "codeforces").catch(async (error) => {
+				throw new Error("Usuário não encontrado", { cause: user1 })
+			})
+			const p2 = await bot.loadUser(user2, "codeforces").catch(async (error) => {
+				throw new Error("Usuário não encontrado", { cause: user2 })
+			})
 
 			const tagFreq1 = {}
 			const tagFreq2 = {}
@@ -107,6 +111,11 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
+			if (error.message === "Usuário não encontrado") {
+				return interaction.editReply({
+					content: bot.i18n.get(interaction, "errors.handle_not_found", { HANDLE: error.cause }),
+				})
+			}
 			console.error(`match: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),

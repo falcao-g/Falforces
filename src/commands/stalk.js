@@ -29,7 +29,9 @@ module.exports = {
 		try {
 			await interaction.deferReply().catch(() => {})
 			const friend = interaction.options.getString("usuario")
-			let profile = await bot.loadUser(friend, "codeforces")
+			let profile = await bot.loadUser(friend, "codeforces").catch(async (error) => {
+				throw new Error("Usuário não encontrado", { cause: friend })
+			})
 
 			const solvedProblems = []
 
@@ -92,6 +94,11 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
+			if (error.message === "Usuário não encontrado") {
+				return interaction.editReply({
+					content: bot.i18n.get(interaction, "errors.handle_not_found", { HANDLE: error.cause }),
+				})
+			}
 			console.error(`stalk: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),
