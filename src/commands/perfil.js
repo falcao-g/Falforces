@@ -51,14 +51,14 @@ module.exports = {
 					: ""
 			informacoes += bot.i18n.get(interaction, "commands.profile.friends", { FRIENDS: data.friendOfCount })
 			informacoes += bot.i18n.get(interaction, "commands.profile.contribution", { CONTRIBUTION: data.contribution })
+			informacoes +=
+				data.solvedCount > 0
+					? bot.i18n.get(interaction, "commands.profile.hardest", { HARDEST: data.hardestSolved })
+					: ""
 
 			var estatisticas = ``
 			estatisticas += bot.i18n.get(interaction, "commands.profile.tries", { TRIES: data.triedCount })
 			estatisticas += bot.i18n.get(interaction, "commands.profile.solved", { SOLVED: data.solvedCount })
-			estatisticas +=
-				data.solvedCount > 0
-					? bot.i18n.get(interaction, "commands.profile.hardest", { HARDEST: data.hardestSolved })
-					: ""
 			estatisticas += bot.i18n.get(interaction, "commands.profile.contests", { CONTESTS: data.contestCount })
 			estatisticas +=
 				data.solvedCount > 0
@@ -70,6 +70,7 @@ module.exports = {
 					: ""
 			estatisticas += bot.i18n.get(interaction, "commands.profile.top_language", { TOP_LANGUAGE: data.topLanguage })
 			estatisticas += bot.i18n.get(interaction, "commands.profile.submissions", { SUBMISSIONS: data.submissionCount })
+			estatisticas += bot.i18n.get(interaction, "commands.profile.days_in_row", { DAYS_IN_ROW: data.maxDaysInRow })
 
 			var insignias = await bot.getInsignias(data.handle)
 
@@ -116,7 +117,7 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
-			console.error(`profile: ${error}`)
+			console.error(`perfil: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),
 			})
