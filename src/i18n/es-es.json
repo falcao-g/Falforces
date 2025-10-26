@@ -36,14 +36,15 @@
       "city": "🏙️ Ciudad: {CIDADE}\n",
       "organization": "🏛️ Organización: {ORGANIZATION}\n",
       "friends": "⭐ Número de amigos: {FRIENDS}\n",
-      "contribution": "✍️ Contribución: {CONTRIBUTION}",
+      "contribution": "✍️ Contribución: {CONTRIBUTION}\n",
       "tries": "🧠 Problemas intentados: {TRIES}\n",
       "solved": "🎈 Problemas resueltos: {SOLVED}\n",
-      "hardest": "🔥 Problema más difícil: {HARDEST}\n",
+      "hardest": "🔥 Problema más difícil: {HARDEST}",
       "contests": "🏆 Contests participados: {CONTESTS}\n",
       "tags": "🏷️ Tags favoritas: {TAG1}, {TAG2}, {TAG3}\n",
       "top_language": "🌐 Lenguaje más usado: {TOP_LANGUAGE}\n",
       "submissions": "🖥️ Número de submissões: {SUBMISSIONS}",
+      "days_in_row": "📅  Maior sequência: {DAYS_IN_ROW} dias\n",
       "embed": {
         "description": "🚀 Rating actual: {RATING} | Máximo: {MAXRATING}\n👑 Rank actual: {RANK} | Máximo: {MAXRANK}",
         "footer": "📸 Visto por último en: {LAST_SEEN} | 📋 Registrado en: {REGISTERED}"

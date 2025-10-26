@@ -44,6 +44,7 @@ const profileSchema = new mongoose.Schema(
 		tags: { type: Array, default: [] },
 		submissionCount: { type: Number, default: 0 },
 		topLanguage: { type: String, default: "" },
+		maxDaysInRow: { type: Number, default: 0 },
 		lastFetched: { type: Number, default: 0 },
 	},
 	{

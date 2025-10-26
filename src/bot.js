@@ -188,6 +188,7 @@ class Bot {
 
 		const subRes = await fetch(`https://codeforces.com/api/user.status?handle=${user.handle}&from=1&count=1000000`)
 		const allSubs = (await subRes.json()).result
+		allSubs.sort((a, b) => a.creationTimeSeconds - b.creationTimeSeconds)
 
 		const triedProblems = new Set()
 		const contests = new Set()
@@ -197,6 +198,10 @@ class Bot {
 		var hardestSolvedRating = 0
 		var hardestSolved = ``
 		var languages = new Map()
+
+		var lastDay = null
+		var currentStreak = 0
+		var maxDaysInRow = 0
 		allSubs.forEach((submissao) => {
 			triedProblems.add(submissao.problem.name)
 
@@ -206,6 +211,17 @@ class Bot {
 
 			if (submissao.verdict === "OK") {
 				solvedProblems.add(submissao.problem.name)
+
+				const day = Math.floor(submissao.creationTimeSeconds / 86400)
+				if (lastDay === null) {
+					currentStreak = 1
+				} else if (day === lastDay + 1) {
+					currentStreak += 1
+				} else if (day !== lastDay) {
+					currentStreak = 1
+				}
+				lastDay = day
+				maxDaysInRow = Math.max(maxDaysInRow, currentStreak)
 
 				if (submissao.problem.rating > hardestSolvedRating) {
 					hardestSolved = `${submissao.problem.name} | ${submissao.problem.rating}`
@@ -236,7 +252,7 @@ class Bot {
 				.map((lang) => lang[0])[0] || "Unknown"
 		user.tags = Array.from(favoriteTags).sort((a, b) => b[1] - a[1])
 		user.submissionCount = allSubs.length
-
+		user.maxDaysInRow = maxDaysInRow
 		const cutoff = (Math.max(...user.submissions.map((s) => s.creationTimeSeconds)) * 1000) / 1000
 		const newSubs = allSubs.filter((s) => s.creationTimeSeconds > cutoff)
 
