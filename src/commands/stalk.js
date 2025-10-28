@@ -41,7 +41,7 @@ module.exports = {
 						name: submissao.problem.name,
 						rating: submissao.problem.rating,
 						tags: submissao.problem.tags,
-						contestId: submissao.problem.contestId,
+						contestId: submissao.contestId,
 						index: submissao.problem.index,
 					})
 				}
