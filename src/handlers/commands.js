@@ -1,5 +1,5 @@
 async function loadCommands(instance, client) {
-	const { loadFiles } = require("../utils/fileLoader")
+	const { loadFiles } = require("../utils/functions")
 
 	await client.commands.clear()
 

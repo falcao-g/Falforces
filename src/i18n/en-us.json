@@ -36,22 +36,23 @@
       "city": "🏙️ City: {CIDADE}\n",
       "organization": "🏛️ Organization: {ORGANIZATION}\n",
       "friends": "⭐ Number of friends: {FRIENDS}\n",
-      "contribution": "✍️ Contribution: {CONTRIBUTION}",
+      "contribution": "✍️ Contribution: {CONTRIBUTION}\n",
       "tries": "🧠 Problems tried: {TRIES}\n",
       "solved": "🎈 Problems solved: {SOLVED}\n",
-      "hardest": "🔥 Hardest problem: {HARDEST}\n",
+      "hardest": "🔥 Hardest problem: {HARDEST}",
       "contests": "🏆 Contests participated: {CONTESTS}\n",
       "tags": "🏷️ Favorite tags: {TAG1}, {TAG2}, {TAG3}\n",
       "top_language": "🌐 Most used language: {TOP_LANGUAGE}\n",
       "submissions": "🖥️ Number of submissions: {SUBMISSIONS}",
+      "days_in_row": "📅  Longest streak: {DAYS_IN_ROW} days\n",
       "embed": {
         "description": "🚀 Current rating: {RATING} | Max: {MAXRATING}\n👑 Current rank: {RANK} | Max: {MAXRANK}",
         "footer": "📸 Last seen on: {LAST_SEEN} | 📋 Registered on: {REGISTERED}"
       }
     },
     "stalk": {
-      "response_diff": "Last problems that {AMIGO} did without you... :worried:",
-      "response_none": "{AMIGO} didn't do any problems without you, wow! :heart_hands:"
+      "response": "Last problems that {AMIGO} did... :telescope:",
+      "response_none": "{AMIGO} didn't do any problems yet! :worried:"
     }
   },
   "events": {
@@ -64,6 +65,7 @@
     "problemas": "Problems"
   },
   "errors": {
+    "handle_not_found": "The user `{HANDLE}` was not found on Codeforces!",
     "bot": "You can't use Falbot's commands because you are a bot",
     "restricted": "Only the bot developer can run this command.",
     "exception": "An error occurred when running this command! This error has been reported to the developer."

@@ -1,5 +1,5 @@
 async function loadEvents(bot, client) {
-	const { loadFiles } = require("../utils/fileLoader")
+	const { loadFiles } = require("../utils/functions")
 
 	await client.events.clear()
 
