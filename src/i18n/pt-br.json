@@ -53,6 +53,13 @@
     "stalk": {
       "response": "Últimos problemas que {AMIGO} fez... :telescope:",
       "response_none": "{AMIGO} não fez nenhum problema ainda! :worried:"
+    },
+    "futuros": {
+      "embed": {
+        "title": ":calendar: Próximos Contests do Codeforces e AtCoder",
+        "field_no_contests": "Nenhum contest futuro encontrado! :thinking:",
+        "field_contest": "**Início:** {INICIO}  :balloon:\n**Link:** {LINK}\n**Duração:** {DURACAO} horas\n**Tipo:** {TIPO}"
+      }
     }
   },
   "events": {
