@@ -3,10 +3,10 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("contest")
-		.setDescription("Use esse comando para ser avisado sobre contests futuros do Codeforces")
+		.setDescription("Use esse comando para ser avisado sobre contests futuros do Codeforces e AtCoder")
 		.setDescriptionLocalizations({
-			"en-US": "Use this command to be notified about upcoming Codeforces contests",
-			"es-ES": "Usa este comando para recibir notificaciones sobre futuros concursos de Codeforces",
+			"en-US": "Use this command to be notified about upcoming Codeforces and AtCoder contests",
+			"es-ES": "Usa este comando para recibir notificaciones sobre futuros concursos de Codeforces y AtCoder",
 		})
 		.addChannelOption((channel) =>
 			channel

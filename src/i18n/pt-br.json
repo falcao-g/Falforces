@@ -6,7 +6,7 @@
     "contest": {
       "embed": {
         "title": ":bell: Notificações Ativadas!",
-        "description": "Você receberá notificações um dia e uma hora antes de cada contest do Codeforces no canal {CANAL}",
+        "description": "Você receberá notificações um dia e uma hora antes de cada contest no canal {CANAL}",
         "field_value": "**Para desativar as notificações, use o comando `/parar`**"
       }
     },
@@ -25,7 +25,7 @@
     "parar": {
       "embed": {
         "title": ":no_bell: Notificações Desativadas!",
-        "description": "Você não receberá mais notificações sobre contests do Codeforces."
+        "description": "Você não receberá mais notificações sobre contests."
       }
     },
     "ping": {
