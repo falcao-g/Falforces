@@ -60,7 +60,10 @@ class Bot {
 							name: c.contestName,
 							type: c.contestType,
 							startTimeSeconds: Math.floor(new Date(c.contestTime).getTime() / 1000),
-							durationSeconds: c.contestDuration.split(":").reduce((acc, time) => 60 * 60 * acc + +time, 0),
+							durationSeconds: c.contestDuration.split(":").reduce((acc, time, index) => {
+								if (index === 0) return Number(time) * 3600
+								return acc + Number(time) * 60
+							}, 0),
 							url: c.contestUrl,
 							reminded1day: false,
 							reminded1hour: false,
