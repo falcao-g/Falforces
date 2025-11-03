@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityType } = require("discord.js")
 const { loadEvents } = require("./handlers/events.js")
 const { loadCommands } = require("./handlers/commands.js")
+const { fetchUpcomingContests } = require("@qatadaazzeh/atcoder-api")
 const I18n = require("./handlers/i18n.js")
 require("dotenv").config()
 const TEN_MINUTES = 10 * 60 * 1000
@@ -48,11 +49,29 @@ class Bot {
 
 		this.client.on("ready", async () => {
 			const fetchContests = async () => {
-				const response = await fetch("https://codeforces.com/api/contest.list")
-				const data = await response.json()
+				const responseCodeforces = await fetch("https://codeforces.com/api/contest.list")
+				const atCoderData = await fetchUpcomingContests()
+				const codeforcesData = await responseCodeforces.json()
 
-				for (const contest of data.result) {
+				for (const c of atCoderData) {
+					if (!this.upcomingContests.has(c.contestId)) {
+						const contest = {
+							id: c.contestId,
+							name: c.contestName,
+							type: c.contestType,
+							startTimeSeconds: Math.floor(new Date(c.contestTime).getTime() / 1000),
+							durationSeconds: c.contestDuration.split(":").reduce((acc, time) => 60 * 60 * acc + +time, 0),
+							url: c.contestUrl,
+							reminded1day: false,
+							reminded1hour: false,
+						}
+						this.upcomingContests.set(contest.id, contest)
+					}
+				}
+
+				for (const contest of codeforcesData.result) {
 					if (!this.upcomingContests.has(contest.id) && contest.phase === "BEFORE") {
+						contest.url = `https://codeforces.com/contests/${contest.id}`
 						contest.reminded1day = false
 						contest.reminded1hour = false
 						this.upcomingContests.set(contest.id, contest)
@@ -133,7 +152,7 @@ class Bot {
 										TIPO: contest.type,
 									})
 								)
-								.setURL(`https://codeforces.com/contests/${contest.id}`)
+								.setURL(contest.url)
 
 							channel.send({ embeds: [embed] })
 						}
