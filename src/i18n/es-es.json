@@ -6,7 +6,7 @@
     "contest": {
       "embed": {
         "title": ":bell: ¡Notificaciones Activadas!",
-        "description": "Recibirás notificaciones un día y una hora antes de cada contest de Codeforces en el canal {CANAL}",
+        "description": "Recibirás notificaciones un día y una hora antes de cada contest en el canal {CANAL}",
         "field_value": "**Para desactivar las notificaciones, usa el comando `/parar`**"
       }
     },
@@ -25,7 +25,7 @@
     "parar": {
       "embed": {
         "title": ":no_bell: ¡Notificaciones Desactivadas!",
-        "description": "No recibirás más notificaciones sobre contests de Codeforces."
+        "description": "No recibirás más notificaciones sobre contests."
       }
     },
     "ping": {
@@ -53,6 +53,13 @@
     "stalk": {
       "response": "Últimos problemas que {AMIGO} hizo... :telescope:",
       "response_none": "{AMIGO} no hizo ningún problema aún! :worried:"
+    },
+    "futuros": {
+      "embed": {
+        "title": ":calendar: Próximos Contests do Codeforces e AtCoder",
+        "field_no_contests": "¡Ningún contest futuro encontrado! :thinking:",
+        "field_contest": "**Inicio:** {INICIO}  :balloon:\n**Link:** {LINK}\n**Duración:** {DURACAO} horas\n**Tipo:** {TIPO}"
+      }
     }
   },
   "events": {
