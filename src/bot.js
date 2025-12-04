@@ -3,7 +3,6 @@ const { loadEvents } = require("./handlers/events.js")
 const { loadCommands } = require("./handlers/commands.js")
 const { fetchUpcomingContests } = require("@qatadaazzeh/atcoder-api")
 const I18n = require("./handlers/i18n.js")
-require("dotenv").config()
 const TEN_MINUTES = 10 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
 const ONE_DAY = 24 * 60 * 60 * 1000
