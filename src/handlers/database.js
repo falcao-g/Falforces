@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-require("dotenv").config()
 
 class databaseHandler {
 	async connect() {
