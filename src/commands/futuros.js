@@ -16,13 +16,13 @@ module.exports = {
 			await interaction.deferReply()
 
 			const upcomingContests = []
-			// upcomingContests is a map, so we need to convert it to an array and sort it by startTime
-			const sortedContests = Array.from(bot.upcomingContests.values()).sort(
-				(a, b) => a.startTimeSeconds - b.startTimeSeconds
-			)
-			for (const contest of sortedContests) {
+			const addedContests = new Set()
+			for (const c of bot.scheduler.all()) {
 				if (upcomingContests.length >= 3) break
-				upcomingContests.push(contest)
+				if (!addedContests.has(c.contest._id)) {
+					upcomingContests.push(c.contest)
+					addedContests.add(c.contest._id)
+				}
 			}
 
 			const embed = await bot.createEmbed("#551976").setTitle(bot.i18n.get(interaction, "commands.futuros.embed.title"))
@@ -31,9 +31,9 @@ module.exports = {
 				embed.addFields({
 					name: contest.name,
 					value: bot.i18n.get(interaction, "commands.futuros.embed.field_contest", {
-						LINK: contest.url,
-						INICIO: `<t:${contest.startTimeSeconds}:F>`,
-						DURACAO: (contest.durationSeconds / 3600).toFixed(2),
+						LINK: contest.data.url,
+						INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
+						DURACAO: (contest.data.durationSeconds / 3600).toFixed(2),
 						TIPO: contest.type,
 					}),
 				})
