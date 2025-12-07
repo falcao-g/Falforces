@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
+const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -24,6 +24,7 @@ module.exports = {
 					addedContests.add(c.contest._id)
 				}
 			}
+			upcomingContests.sort((a, b) => a.data.startTimeSeconds - b.data.startTimeSeconds)
 
 			const embed = await bot.createEmbed("#551976").setTitle(bot.i18n.get(interaction, "commands.futuros.embed.title"))
 
