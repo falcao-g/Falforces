@@ -14,11 +14,12 @@ class Bot {
 	userSchema = require("./schemas/user")
 	profileSchema = require("./schemas/profile")
 	guildSchema = require("./schemas/guild")
+	notificationSchema = require("./schemas/notification")
+	scheduler = new (require("./handlers/scheduler.js"))(this)
 	client = new Client({
 		shards: "auto",
 		intents: [GatewayIntentBits.Guilds],
 	})
-	upcomingContests = new Map()
 
 	constructor() {
 		this.client.on("ready", () => {
@@ -47,125 +48,47 @@ class Bot {
 		this.databaseHandler.connect(process.env.MONGODB_URI)
 
 		this.client.on("ready", async () => {
+			const contests = await this.notificationSchema.find()
+			this.scheduler.loadContests(contests)
+
 			const fetchContests = async () => {
 				const responseCodeforces = await fetch("https://codeforces.com/api/contest.list")
 				const atCoderData = await fetchUpcomingContests()
-				const codeforcesData = await responseCodeforces.json()
+				const codeforcesData = (await responseCodeforces.json()).result.filter((c) => c.phase === "BEFORE")
+				const everyContest = [...atCoderData, ...codeforcesData]
 
-				for (const c of atCoderData) {
-					if (!this.upcomingContests.has(c.contestId)) {
+				for (const c of everyContest) {
+					if (!(await this.notificationSchema.findById(c.contestId ?? c.id))) {
+						var startTimeSeconds = Math.floor(new Date(c.contestTime).getTime() / 1000)
 						const contest = {
-							id: c.contestId,
-							name: c.contestName,
-							type: c.contestType,
-							startTimeSeconds: Math.floor(new Date(c.contestTime).getTime() / 1000),
-							durationSeconds: c.contestDuration.split(":").reduce((acc, time, index) => {
-								if (index === 0) return Number(time) * 3600
-								return acc + Number(time) * 60
-							}, 0),
-							url: c.contestUrl,
-							reminded1day: false,
-							reminded1hour: false,
+							_id: c.id ?? c.contestId,
+							name: c.contestName ?? c.name,
+							type: c.contestType ?? c.type,
+							data: {
+								startTimeSeconds: c.startTimeSeconds ?? startTimeSeconds,
+								durationSeconds: c.durationSeconds ?? parseDuration(c.contestDuration),
+								url: c.contestUrl ?? `https://codeforces.com/contest/${c.id}`,
+							},
+							notificationTimes: [
+								{ timestamp: (c.startTimeSeconds ?? startTimeSeconds) - ONE_DAY / 1000, sent: false },
+								{ timestamp: (c.startTimeSeconds ?? startTimeSeconds) - ONE_HOUR / 1000, sent: false },
+							],
 						}
-						this.upcomingContests.set(contest.id, contest)
-					}
-				}
-
-				for (const contest of codeforcesData.result) {
-					if (!this.upcomingContests.has(contest.id) && contest.phase === "BEFORE") {
-						contest.url = `https://codeforces.com/contests/${contest.id}`
-						contest.reminded1day = false
-						contest.reminded1hour = false
-						this.upcomingContests.set(contest.id, contest)
+						await this.notificationSchema.create(contest)
+						this.scheduler.addContest(contest)
 					}
 				}
 				console.log("fetched contests")
 			}
 
-			let schedulerTimeoutId = null
-
-			const processContests = async () => {
-				if (schedulerTimeoutId) {
-					clearTimeout(schedulerTimeoutId)
-					schedulerTimeoutId = null
-				}
-				let timeToNextContest = null
-
-				for (const [id, contest] of this.upcomingContests) {
-					if (!contest.startTimeSeconds) {
-						this.upcomingContests.delete(id)
-						continue
-					}
-
-					const timeRemaining = contest.startTimeSeconds * 1000 - Date.now()
-					if (timeRemaining <= 0 || (contest.reminded1day && contest.reminded1hour)) {
-						this.upcomingContests.delete(id)
-						continue
-					}
-
-					if (!timeToNextContest || timeRemaining < timeToNextContest) {
-						timeToNextContest = timeRemaining
-					}
-
-					if (timeRemaining <= ONE_HOUR && !contest.reminded1hour) {
-						contest.reminded1hour = true
-						await sendReminder(contest)
-					} else if (timeRemaining <= ONE_DAY && !contest.reminded1day) {
-						contest.reminded1day = true
-						await sendReminder(contest)
-					}
-				}
-
-				if (!timeToNextContest) {
-					const DEFAULT_CHECK = 30 * 60 * 1000
-					schedulerTimeoutId = setTimeout(processContests, DEFAULT_CHECK)
-					return
-				}
-
-				let nextWakeMs
-				if (timeToNextContest > ONE_DAY) {
-					nextWakeMs = timeToNextContest - ONE_DAY
-				} else if (timeToNextContest > ONE_HOUR) {
-					nextWakeMs = timeToNextContest - ONE_HOUR
-				} else {
-					nextWakeMs = Math.min(30 * 1000, timeToNextContest)
-				}
-
-				nextWakeMs = Math.max(0, Math.floor(nextWakeMs))
-				schedulerTimeoutId = setTimeout(processContests, nextWakeMs)
-			}
-
-			const sendReminder = async (contest) => {
-				console.log("i will try to inform about contest:", contest)
-				const guilds = await this.guildSchema.find({ notificationChannel: { $ne: null } })
-				guilds.forEach(async (guild) => {
-					try {
-						var notificationChannel = guild.notificationChannel
-						guild = await this.client.guilds.fetch(guild.id)
-						const channel = guild.channels.cache.get(notificationChannel)
-						if (channel) {
-							const embed = this.createEmbed("#C12127")
-								.setTitle(`${contest.name}`)
-								.setDescription(
-									this.i18n.get(null, "events.contest_notification", {
-										TEMPO: `<t:${contest.startTimeSeconds}:R>`,
-										INICIO: `<t:${contest.startTimeSeconds}:F>`,
-										DURACAO: contest.durationSeconds / 3600,
-										TIPO: contest.type,
-									})
-								)
-								.setURL(contest.url)
-
-							channel.send({ embeds: [embed] })
-						}
-					} catch (err) {
-						console.error("Error notifying contest:", err)
-					}
-				})
+			const parseDuration = (str) => {
+				const parts = str.split(":").map(Number)
+				if (parts.length === 2) return parts[0] * 3600 + parts[1] * 60
+				if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2]
+				return Number(str) * 60
 			}
 
 			await fetchContests()
-			await processContests()
 			setInterval(fetchContests, 1000 * 60 * 60 * 3)
 		})
 	}
@@ -310,6 +233,35 @@ class Bot {
 		}
 
 		return await this.fetchAndMerge(user)
+	}
+
+	async sendContestReminder(contest) {
+		console.log("[sendReminder] Sending reminder for contest:", contest)
+		const guilds = await this.guildSchema.find({ notificationChannel: { $ne: null } })
+
+		for (const g of guilds) {
+			try {
+				const guild = await this.client.guilds.fetch(g.id)
+				const channel = guild.channels.cache.get(g.notificationChannel)
+				if (!channel) continue
+
+				const embed = this.createEmbed("#C12127")
+					.setTitle(contest.name)
+					.setDescription(
+						this.i18n.get(null, "events.contest_notification", {
+							TEMPO: `<t:${contest.data.startTimeSeconds}:R>`,
+							INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
+							DURACAO: (contest.data.durationSeconds / 3600).toFixed(1),
+							TIPO: contest.type,
+						})
+					)
+					.setURL(contest.data.url)
+
+				await channel.send({ embeds: [embed] })
+			} catch (err) {
+				console.error("[sendReminder] Error:", err)
+			}
+		}
 	}
 
 	createEmbed(color = "Random") {
