@@ -64,7 +64,6 @@ class ReminderScheduler {
 
 		if (now >= contest.data.startTimeSeconds) {
 			await this.bot.notificationSchema.deleteOne({ _id: contest._id })
-			this.bot.notifications.delete(contest._id)
 			return this.scheduleNext()
 		}
 
