@@ -70,8 +70,8 @@ class Bot {
 								url: c.contestUrl ?? `https://codeforces.com/contest/${c.id}`,
 							},
 							notificationTimes: [
-								{ timestamp: c.startTimeSeconds ?? startTimeSeconds - ONE_DAY / 1000, sent: false },
-								{ timestamp: c.startTimeSeconds ?? startTimeSeconds - ONE_HOUR / 1000, sent: false },
+								{ timestamp: (c.startTimeSeconds ?? startTimeSeconds) - ONE_DAY / 1000, sent: false },
+								{ timestamp: (c.startTimeSeconds ?? startTimeSeconds) - ONE_HOUR / 1000, sent: false },
 							],
 						}
 						await this.notificationSchema.create(contest)
