@@ -3,6 +3,7 @@ const { loadEvents } = require("./handlers/events.js")
 const { loadCommands } = require("./handlers/commands.js")
 const { fetchUpcomingContests } = require("@qatadaazzeh/atcoder-api")
 const I18n = require("./handlers/i18n.js")
+const { msToTime } = require("./utils/functions.js")
 const TEN_MINUTES = 10 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
 const ONE_DAY = 24 * 60 * 60 * 1000
@@ -251,7 +252,7 @@ class Bot {
 						this.i18n.get(null, "events.contest_notification", {
 							TEMPO: `<t:${contest.data.startTimeSeconds}:R>`,
 							INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
-							DURACAO: (contest.data.durationSeconds / 3600).toFixed(1),
+							DURACAO: msToTime(contest.data.durationSeconds * 1000),
 							TIPO: contest.type,
 						})
 					)
