@@ -27,7 +27,7 @@ async function loadFiles(dirName) {
 
 /**
  * @param {integer} ms
- * @description Converts milliseconds to a string with the format "1m 1d 1h 1m 1s"
+ * @description Converts milliseconds to a string with the format "1d 1h 1m"
  * @example msToTime(1000) // 1s
  * @returns {string}
  */
