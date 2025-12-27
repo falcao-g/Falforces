@@ -35,12 +35,6 @@ function msToTime(ms) {
 	let time = ""
 
 	let n = 0
-	if (ms >= 2592000000) {
-		n = Math.floor(ms / 2592000000)
-		time += `${n}m `
-		ms -= n * 2592000000
-	}
-
 	if (ms >= 86400000) {
 		n = Math.floor(ms / 86400000)
 		time += `${n}d `
