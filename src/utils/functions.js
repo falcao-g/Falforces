@@ -27,7 +27,7 @@ async function loadFiles(dirName) {
 
 /**
  * @param {integer} ms
- * @description Converts milliseconds to a string with the format "1m 1d 1h 1m 1s"
+ * @description Converts milliseconds to a string with the format "1d 1h 1m"
  * @example msToTime(1000) // 1s
  * @returns {string}
  */
@@ -35,12 +35,6 @@ function msToTime(ms) {
 	let time = ""
 
 	let n = 0
-	if (ms >= 2592000000) {
-		n = Math.floor(ms / 2592000000)
-		time += `${n}m `
-		ms -= n * 2592000000
-	}
-
 	if (ms >= 86400000) {
 		n = Math.floor(ms / 86400000)
 		time += `${n}d `

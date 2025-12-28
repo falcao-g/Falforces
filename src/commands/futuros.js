@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js")
+const { msToTime } = require("../utils/functions.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,7 +35,7 @@ module.exports = {
 					value: bot.i18n.get(interaction, "commands.futuros.embed.field_contest", {
 						LINK: contest.data.url,
 						INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
-						DURACAO: (contest.data.durationSeconds / 3600).toFixed(2),
+						DURACAO: msToTime(contest.data.durationSeconds * 1000),
 						TIPO: contest.type,
 					}),
 				})
