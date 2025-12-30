@@ -25,18 +25,18 @@ Certifique-se de seguir o [Código de Conduta](CODE_OF_CONDUCT.md) e estas diret
 
 As insígnias são uma ótima maneira de reconhecer os participantes de competições oficiais. Atualmente, elas aparecem no comando `/profile` do bot, e são exibidas com base no handle, portanto, funcionam melhor com competições que ocorreram em plataformas como Codeforces, AtCoder, entre outras.
 
-Segue abaixo o exemplo de uma insígnia usada para representar o Esquenta FACOMpetindo 2024:
-![Esquenta FACOMpetindo 2024](./assets/example.png)
+Segue abaixo o exemplo de uma insígnia usada para representar o Esquenta FACOMpetindo 2025:
+![Esquenta FACOMpetindo 2025](./assets/example.png)
 
 Para criar sua própria insígnia personalizada, siga os passos abaixo:
 
 1. Crie uma imagem representando a insígnia. O tamanho recomendado é 64x64 pixels, e o formato deve ser PNG com fundo transparente.
-2. Certifique-se de que o nome do arquivo da imagem seja único e descritivo, por exemplo, `esquenta-facompetindo-2024.png`.
+2. Certifique-se de que o nome do arquivo da imagem seja único e descritivo, por exemplo, `esquenta-facompetindo-2025.png`.
 3. Adicione a imagem na pasta `assets/badges/` do repositório
 4. No arquivo `utils/json/contests.json`, adicione uma nova entrada para a sua insígnia, seguindo o formato existente. Por exemplo:
    ```json
    {
-   	"name": "Esquenta FACOMpetindo 2024",
+   	"name": "Esquenta FACOMpetindo 2025",
    	"badge": "",
    	"contestants": ["handle1", "handle2", "handle3"]
    }
