@@ -2,13 +2,14 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("parar")
+		.setName("stop")
 		.setNameLocalizations({
-			"en-US": "stop",
+			"pt-BR": "parar",
+			"es-ES": "detener",
 		})
-		.setDescription("Use esse comando para parar de receber notificações sobre contests")
+		.setDescription("Use this command to stop receiving notifications about contests")
 		.setDescriptionLocalizations({
-			"en-US": "Use this command to stop receiving notifications about contests",
+			"pt-BR": "Use esse comando para parar de receber notificações sobre contests",
 			"es-ES": "Use este comando para dejar de recibir notificaciones sobre concursos",
 		})
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -26,13 +27,13 @@ module.exports = {
 
 			const embed = await bot
 				.createEmbed("#551976")
-				.setTitle(bot.i18n.get(interaction, "commands.parar.embed.title"))
-				.setDescription(bot.i18n.get(interaction, "commands.parar.embed.description"))
+				.setTitle(bot.i18n.get(interaction, "commands.stop.embed.title"))
+				.setDescription(bot.i18n.get(interaction, "commands.stop.embed.description"))
 			await interaction.editReply({
 				embeds: [embed],
 			})
 		} catch (error) {
-			console.error(`parar: ${error}`)
+			console.error(`stop: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),
 			})

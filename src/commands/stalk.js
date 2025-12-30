@@ -2,25 +2,26 @@ const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("stalkear")
+		.setName("stalk")
 		.setNameLocalizations({
-			"en-US": "stalk",
+			"pt-BR": "stalkear",
+			"es-ES": "acosar",
 		})
-		.setDescription("Veja os últimos problemas que seu amigo resolveu no codeforces")
+		.setDescription("See the latest problems your friend solved on codeforces")
 		.setDescriptionLocalizations({
-			"en-US": "See the latest problems your friend solved on codeforces",
+			"pt-BR": "Veja os últimos problemas que seu amigo resolveu no codeforces",
 			"es-ES": "Vea los últimos problemas que su amigo resolvió en codeforces",
 		})
 		.addStringOption((string) =>
 			string
-				.setName("usuario")
+				.setName("user")
 				.setNameLocalizations({
-					"en-US": "user",
+					"pt-BR": "usuario",
 					"es-ES": "usuario",
 				})
-				.setDescription("Handle do seu amigo no codeforces")
+				.setDescription("Your friend's codeforces handle")
 				.setDescriptionLocalizations({
-					"en-US": "Your friend's codeforces handle",
+					"pt-BR": "Handle do seu amigo no codeforces",
 					"es-ES": "El handle de su amigo en codeforces",
 				})
 				.setRequired(true)
@@ -28,9 +29,9 @@ module.exports = {
 	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
-			const friend = interaction.options.getString("usuario")
+			const friend = interaction.options.getString("user")
 			let profile = await bot.loadUser(friend, "codeforces").catch(async (error) => {
-				throw new Error("Usuário não encontrado", { cause: friend })
+				throw new Error("User not found", { cause: friend })
 			})
 
 			const solvedProblems = []
@@ -69,20 +70,20 @@ module.exports = {
 
 				var embed = bot
 					.createEmbed("#551976")
-					.setTitle(bot.i18n.get(interaction, "commands.stalk.response", { AMIGO: profile.handle }))
+					.setTitle(bot.i18n.get(interaction, "commands.stalk.response", { FRIEND: profile.handle }))
 					.setAuthor({
 						name: profile.handle,
 						iconURL: profile.titlePhoto,
 					})
 					.setThumbnail(profile.titlePhoto)
 					.addFields({
-						name: bot.i18n.get(interaction, "words.problemas"),
+						name: bot.i18n.get(interaction, "words.problems"),
 						value: problems.join("\n"),
 					})
 			} else {
 				var embed = bot
 					.createEmbed("#551976")
-					.setTitle(bot.i18n.get(interaction, "commands.stalk.response_none", { AMIGO: profile.handle }))
+					.setTitle(bot.i18n.get(interaction, "commands.stalk.response_none", { FRIEND: profile.handle }))
 					.setAuthor({
 						name: profile.handle,
 						iconURL: profile.titlePhoto,
@@ -94,7 +95,7 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
-			if (error.message === "Usuário não encontrado") {
+			if (error.message === "User not found") {
 				return interaction.editReply({
 					content: bot.i18n.get(interaction, "errors.handle_not_found", { HANDLE: error.cause }),
 				})

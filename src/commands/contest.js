@@ -3,17 +3,21 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("contest")
-		.setDescription("Use esse comando para ser avisado sobre contests futuros do Codeforces e AtCoder")
+		.setDescription("Use this command to be notified about upcoming Codeforces and AtCoder contests")
 		.setDescriptionLocalizations({
-			"en-US": "Use this command to be notified about upcoming Codeforces and AtCoder contests",
+			"pt-BR": "Use este comando para ser avisado sobre contests futuros do Codeforces e AtCoder",
 			"es-ES": "Usa este comando para recibir notificaciones sobre futuros concursos de Codeforces y AtCoder",
 		})
 		.addChannelOption((channel) =>
 			channel
-				.setName("canal")
-				.setDescription("Canal onde você deseja receber as notificações")
+				.setName("channel")
+				.setNameLocalizations({
+					"pt-BR": "canal",
+					"es-ES": "canal",
+				})
+				.setDescription("Channel where you want to receive notifications")
 				.setDescriptionLocalizations({
-					"en-US": "Channel where you want to receive notifications",
+					"pt-BR": "Canal onde você deseja receber as notificações",
 					"es-ES": "Canal donde deseas recibir notificaciones",
 				})
 				.setRequired(true)
@@ -23,7 +27,7 @@ module.exports = {
 		try {
 			await interaction.deferReply()
 
-			const channel = interaction.options.getChannel("canal")
+			const channel = interaction.options.getChannel("channel")
 
 			await bot.guildSchema.findByIdAndUpdate(
 				interaction.guild.id,
@@ -36,7 +40,7 @@ module.exports = {
 			const embed = await bot
 				.createEmbed("#551976")
 				.setTitle(bot.i18n.get(interaction, "commands.contest.embed.title"))
-				.setDescription(bot.i18n.get(interaction, "commands.contest.embed.description", { CANAL: channel }))
+				.setDescription(bot.i18n.get(interaction, "commands.contest.embed.description", { CHANNEL: channel }))
 				.addFields({ name: "\u200B", value: bot.i18n.get(interaction, "commands.contest.embed.field_value") })
 			await interaction.editReply({
 				embeds: [embed],

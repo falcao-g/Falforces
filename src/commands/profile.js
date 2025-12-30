@@ -2,22 +2,37 @@ const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("perfil")
-		.setDescription("Acesse informações como rating, problemas resolvidos e mais de um usuário do codeforces")
+		.setName("profile")
+		.setNameLocalizations({
+			"pt-BR": "perfil",
+			"es-ES": "perfil",
+		})
+		.setDescription("Access information such as rating, solved problems and more of a codeforces user")
 		.setDescriptionLocalizations({
-			"en-US": "Access information such as rating, solved problems and more of a codeforces user",
+			"pt-BR": "Acesse informações como rating, problemas resolvidos e mais de um usuário do codeforces",
 			"es-ES": "Accede a información como calificación, problemas resueltos y más de un usuario de codeforces",
 		})
 		.addStringOption((string) =>
-			string.setName("usuario").setDescription("Nome do usuário no codeforces").setRequired(true)
+			string
+				.setName("user")
+				.setNameLocalizations({
+					"pt-BR": "usuario",
+					"es-ES": "usuario",
+				})
+				.setDescription("Name of the user on codeforces")
+				.setDescriptionLocalizations({
+					"pt-BR": "Nome do usuário no codeforces",
+					"es-ES": "Nombre del usuario en codeforces",
+				})
+				.setRequired(true)
 		),
 	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
-			const user = interaction.options.getString("usuario")
+			const user = interaction.options.getString("user")
 
 			let data = await bot.loadUser(user, "codeforces").catch(async (error) => {
-				throw new Error("Usuário não encontrado", { cause: user })
+				throw new Error("User not found", { cause: user })
 			})
 
 			const colors = {
@@ -33,36 +48,37 @@ module.exports = {
 				"legendary grandmaster": "#FF0000",
 			}
 
-			var nome = ``
+			var name = ``
 			if (data.firstName != undefined && data.lastName != undefined) {
-				nome = ` (${data.firstName} ${data.lastName})`
+				name = ` (${data.firstName} ${data.lastName})`
 			} else if (data.firstName != undefined) {
-				nome = ` (${data.firstName})`
+				name = ` (${data.firstName})`
 			} else {
-				nome += data.lastName != undefined ? ` (${data.lastName})` : ""
+				name += data.lastName != undefined ? ` (${data.lastName})` : ""
 			}
 
-			var informacoes = ``
-			informacoes +=
-				data.country != undefined ? bot.i18n.get(interaction, "commands.profile.country", { PAIS: data.country }) : ""
-			informacoes +=
-				data.city != undefined ? bot.i18n.get(interaction, "commands.profile.city", { CIDADE: data.city }) : ""
-			informacoes +=
+			var info = ``
+			info +=
+				data.country != undefined
+					? bot.i18n.get(interaction, "commands.profile.country", { COUNTRY: data.country })
+					: ""
+			info += data.city != undefined ? bot.i18n.get(interaction, "commands.profile.city", { CITY: data.city }) : ""
+			info +=
 				data.organization != undefined
 					? bot.i18n.get(interaction, "commands.profile.organization", { ORGANIZATION: data.organization })
 					: ""
-			informacoes += bot.i18n.get(interaction, "commands.profile.friends", { FRIENDS: data.friendOfCount })
-			informacoes += bot.i18n.get(interaction, "commands.profile.contribution", { CONTRIBUTION: data.contribution })
-			informacoes +=
+			info += bot.i18n.get(interaction, "commands.profile.friends", { FRIENDS: data.friendOfCount })
+			info += bot.i18n.get(interaction, "commands.profile.contribution", { CONTRIBUTION: data.contribution })
+			info +=
 				data.solvedCount > 0
 					? bot.i18n.get(interaction, "commands.profile.hardest", { HARDEST: data.hardestSolved })
 					: ""
 
-			var estatisticas = ``
-			estatisticas += bot.i18n.get(interaction, "commands.profile.tries", { TRIES: data.triedCount })
-			estatisticas += bot.i18n.get(interaction, "commands.profile.solved", { SOLVED: data.solvedCount })
-			estatisticas += bot.i18n.get(interaction, "commands.profile.contests", { CONTESTS: data.contestCount })
-			estatisticas +=
+			var stats = ``
+			stats += bot.i18n.get(interaction, "commands.profile.tries", { TRIES: data.triedCount })
+			stats += bot.i18n.get(interaction, "commands.profile.solved", { SOLVED: data.solvedCount })
+			stats += bot.i18n.get(interaction, "commands.profile.contests", { CONTESTS: data.contestCount })
+			stats +=
 				data.solvedCount > 0
 					? bot.i18n.get(interaction, "commands.profile.tags", {
 							TAG1: data.tags[0][0],
@@ -70,15 +86,15 @@ module.exports = {
 							TAG3: data.tags[2][0],
 					  })
 					: ""
-			estatisticas += bot.i18n.get(interaction, "commands.profile.top_language", { TOP_LANGUAGE: data.topLanguage })
-			estatisticas += bot.i18n.get(interaction, "commands.profile.submissions", { SUBMISSIONS: data.submissionCount })
-			estatisticas += bot.i18n.get(interaction, "commands.profile.days_in_row", { DAYS_IN_ROW: data.maxDaysInRow })
+			stats += bot.i18n.get(interaction, "commands.profile.top_language", { TOP_LANGUAGE: data.topLanguage })
+			stats += bot.i18n.get(interaction, "commands.profile.submissions", { SUBMISSIONS: data.submissionCount })
+			stats += bot.i18n.get(interaction, "commands.profile.days_in_row", { DAYS_IN_ROW: data.maxDaysInRow })
 
-			var insignias = await bot.getInsignias(data.handle)
+			var badges = await bot.getBadges(data.handle)
 
 			const embed = bot
 				.createEmbed(colors[data.rank ?? "newbie"])
-				.setTitle(`${data.handle}` + nome)
+				.setTitle(`${data.handle}` + name)
 				.setDescription(
 					bot.i18n.get(interaction, "commands.profile.embed.description", {
 						RANK: data.rank ?? "newbie",
@@ -90,13 +106,13 @@ module.exports = {
 				.setThumbnail(data.titlePhoto)
 				.addFields(
 					{
-						name: bot.i18n.get(interaction, "words.estatisticas"),
-						value: estatisticas,
+						name: bot.i18n.get(interaction, "words.statistics"),
+						value: stats,
 						inline: true,
 					},
 					{
-						name: bot.i18n.get(interaction, "words.informacoes"),
-						value: informacoes,
+						name: bot.i18n.get(interaction, "words.information"),
+						value: info,
 						inline: true,
 					}
 				)
@@ -108,10 +124,10 @@ module.exports = {
 						}) + "\nby Falcão ❤️",
 				})
 
-			if (insignias.length > 0) {
+			if (badges.length > 0) {
 				embed.addFields({
-					name: bot.i18n.get(interaction, "words.insignias"),
-					value: insignias.join(", "),
+					name: bot.i18n.get(interaction, "words.badges"),
+					value: badges.join(", "),
 				})
 			}
 
@@ -119,14 +135,14 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
-			if (error.message === "Usuário não encontrado") {
+			if (error.message === "User not found") {
 				return interaction.editReply({
 					content: bot.i18n.get(interaction, "errors.handle_not_found", {
 						HANDLE: error.cause,
 					}),
 				})
 			}
-			console.error(`perfil: ${error}`)
+			console.error(`profile: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),
 			})

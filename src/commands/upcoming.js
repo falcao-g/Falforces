@@ -3,13 +3,14 @@ const { msToTime } = require("../utils/functions.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("futuros")
+		.setName("upcoming")
 		.setNameLocalizations({
-			"en-US": "upcoming",
+			"pt-BR": "futuros",
+			"es-ES": "próximos",
 		})
-		.setDescription("Use esse comando para ver os próximos contests do Codeforces e AtCoder")
+		.setDescription("Use this command to see upcoming Codeforces and AtCoder contests")
 		.setDescriptionLocalizations({
-			"en-US": "Use this command to see upcoming Codeforces and AtCoder contests",
+			"pt-BR": "Use esse comando para ver os próximos contests do Codeforces e AtCoder",
 			"es-ES": "Utiliza este comando para ver los próximos concursos de Codeforces y AtCoder",
 		}),
 	execute: async ({ interaction, bot }) => {
@@ -27,29 +28,31 @@ module.exports = {
 			}
 			upcomingContests.sort((a, b) => a.data.startTimeSeconds - b.data.startTimeSeconds)
 
-			const embed = await bot.createEmbed("#551976").setTitle(bot.i18n.get(interaction, "commands.futuros.embed.title"))
+			const embed = await bot
+				.createEmbed("#551976")
+				.setTitle(bot.i18n.get(interaction, "commands.upcoming.embed.title"))
 
 			for (const contest of upcomingContests) {
 				embed.addFields({
 					name: contest.name,
-					value: bot.i18n.get(interaction, "commands.futuros.embed.field_contest", {
+					value: bot.i18n.get(interaction, "commands.upcoming.embed.field_contest", {
 						LINK: contest.data.url,
-						INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
-						DURACAO: msToTime(contest.data.durationSeconds * 1000),
-						TIPO: contest.type,
+						START: `<t:${contest.data.startTimeSeconds}:F>`,
+						DURATION: msToTime(contest.data.durationSeconds * 1000),
+						TYPE: contest.type,
 					}),
 				})
 			}
 
 			if (upcomingContests.length === 0) {
-				embed.setDescription(bot.i18n.get(interaction, "commands.futuros.embed.field_no_contests"))
+				embed.setDescription(bot.i18n.get(interaction, "commands.upcoming.embed.field_no_contests"))
 			}
 
 			await interaction.editReply({
 				embeds: [embed],
 			})
 		} catch (error) {
-			console.error(`futuros: ${error}`)
+			console.error(`upcoming: ${error}`)
 			interaction.editReply({
 				content: bot.i18n.get(interaction, "errors.exception"),
 			})

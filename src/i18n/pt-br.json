@@ -1,7 +1,7 @@
 {
   "commands": {
     "botinfo": {
-        "response": ":house: Servidores: {SERVIDORES}\n:zap: Uptime: {TEMPO}"
+        "response": ":house: Servidores: {SERVERS}\n:zap: Uptime: {UPTIME}"
     },
     "challenge": {
       "embed": {
@@ -14,11 +14,11 @@
     "contest": {
       "embed": {
         "title": ":bell: Notificações Ativadas!",
-        "description": "Você receberá notificações um dia e uma hora antes de cada contest no canal {CANAL}",
+        "description": "Você receberá notificações um dia e uma hora antes de cada contest no canal {CHANNEL}",
         "field_value": "**Para desativar as notificações, use o comando `/parar`**"
       }
     },
-    "convite": {
+    "invite": {
       "response": ":pushpin: Adicione o Falforces agora mesmo no seu servidor e vire um mestre da programação competitiva: [Clique Aqui](https://discord.com/oauth2/authorize?client_id=1348139773658796073)"
     },
     "daily": {
@@ -34,7 +34,7 @@
         "field_top_tags": ":label: Principais tags em comum"
       }
     },
-    "parar": {
+    "stop": {
       "embed": {
         "title": ":no_bell: Notificações Desativadas!",
         "description": "Você não receberá mais notificações sobre contests."
@@ -44,8 +44,8 @@
       "response": ":ping_pong: Pong! O ping do bot é de {PING}ms."
     },
     "profile": {
-      "country": "🗺️ País: {PAIS}\n",
-      "city": "🏙️ Cidade: {CIDADE}\n",
+      "country": "🗺️ País: {COUNTRY}\n",
+      "city": "🏙️ Cidade: {CITY}\n",
       "organization": "🏛️ Organização: {ORGANIZATION}\n",
       "friends": "⭐ Número de amigos: {FRIENDS}\n",
       "contribution": "✍️ Contribuição: {CONTRIBUTION}\n",
@@ -63,25 +63,25 @@
       }
     },
     "stalk": {
-      "response": "Últimos problemas que {AMIGO} fez... :telescope:",
-      "response_none": "{AMIGO} não fez nenhum problema ainda! :worried:"
+      "response": "Últimos problemas que {FRIEND} fez... :telescope:",
+      "response_none": "{FRIEND} não fez nenhum problema ainda! :worried:"
     },
-    "futuros": {
+    "upcoming": {
       "embed": {
         "title": ":calendar: Próximos Contests do Codeforces e AtCoder",
         "field_no_contests": "Nenhum contest futuro encontrado! :thinking:",
-        "field_contest": "**Início:** {INICIO}  :balloon:\n**Link:** {LINK}\n**Duração:** {DURACAO}\n**Tipo:** {TIPO}"
+        "field_contest": "**Início:** {START}  :balloon:\n**Link:** {LINK}\n**Duração:** {DURATION}\n**Tipo:** {TYPE}"
       }
     }
   },
   "events": {
-    "contest_notification": "O contest vai começar {TEMPO}! :balloon:\n\n**Início:** {INICIO}\n**Duração:** {DURACAO}\n**Tipo:** {TIPO}"
+    "contest_notification": "O contest vai começar {START}! :balloon:\n\n**Início:** {START}\n**Duração:** {DURATION}\n**Tipo:** {TYPE}"
   },
   "words": {
-    "estatisticas": "Estatísticas",
-    "informacoes": "Informações",
-    "insignias": "Insígnias",
-    "problemas": "Problemas"
+    "statistics": "Estatísticas",
+    "information": "Informações",
+    "badges": "Insígnias",
+    "problems": "Problemas"
   },
   "errors": {
     "handle_not_found": "🕵️🔎 Usuário com o handle `{HANDLE}` não encontrado no Codeforces",

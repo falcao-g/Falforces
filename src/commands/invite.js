@@ -2,24 +2,24 @@ const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("convite")
+		.setName("invite")
 		.setNameLocalizations({
-			"en-US": "invite",
+			"pt-BR": "convite",
 			"es-ES": "invitación",
 		})
-		.setDescription("Gostou do Falforces? Adicione-o ao seu servidor!")
+		.setDescription("Like Falforces? Add it to your server!")
 		.setDescriptionLocalizations({
-			"en-US": "Like Falforces? Add it to your server!",
+			"pt-BR": "Gostou do Falforces? Adicione-o ao seu servidor!",
 			"es-ES": "¿Te gusta Falforces? ¡Agrégalo a tu servidor!",
 		}),
 	execute: async ({ interaction, bot }) => {
 		await interaction.deferReply().catch(() => {})
 		try {
 			await bot.editReply(interaction, {
-				content: bot.i18n.get(interaction, "commands.convite.response"),
+				content: bot.i18n.get(interaction, "commands.invite.response"),
 			})
 		} catch (error) {
-			console.error(`convite: ${error}`)
+			console.error(`invite: ${error}`)
 			bot.editReply(interaction, {
 				content: bot.i18n.get(interaction, "errors.exception"),
 			})

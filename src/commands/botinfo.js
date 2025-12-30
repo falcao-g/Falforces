@@ -4,9 +4,9 @@ const { SlashCommandBuilder } = require("discord.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("botinfo")
-		.setDescription("Veja algumas estatísticas do bot")
+		.setDescription("Check some bot stats")
 		.setDescriptionLocalizations({
-			"en-US": "Check some bot stats",
+			"pt-BR": "Veja algumas estatísticas do bot",
 			"es-ES": "Mira algunas estadísticas del bot",
 		}),
 	execute: async ({ client, interaction, bot }) => {
@@ -15,8 +15,8 @@ module.exports = {
 			const embed = bot.createEmbed(3426654).addFields({
 				name: "Falforces",
 				value: bot.i18n.get(interaction, "commands.botinfo.response", {
-					SERVIDORES: client.guilds.cache.size,
-					TEMPO: msToTime(client.uptime),
+					SERVERS: client.guilds.cache.size,
+					UPTIME: msToTime(client.uptime),
 				}),
 				inline: false,
 			})
