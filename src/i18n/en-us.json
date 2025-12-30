@@ -13,6 +13,10 @@
     "convite": {
       "response": ":pushpin: Add Falforces to your server now and become a master of competitive programming: [Click Here](https://discord.com/oauth2/authorize?client_id=1348139773658796073)"
     },
+    "daily": {
+      "title": "📌 Daily Problem — Codeforces",
+      "footer": "Problem of {DATE}"
+    },
     "match": {
       "no_matches": "No relevant tags in common",
       "embed": {
