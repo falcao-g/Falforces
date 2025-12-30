@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
-	data: new SlashCommandBuilder().setName("ping").setDescription("Verifica o ping do bot").setDescriptionLocalizations({
-		"en-US": "Check the bot's ping",
+	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot's ping").setDescriptionLocalizations({
+		"pt-BR": "Verifique o ping do bot",
 		"es-ES": "Verifica el ping del bot",
 	}),
 	execute: async ({ interaction, bot }) => {

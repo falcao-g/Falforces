@@ -15,20 +15,20 @@ function pickProblem({ problems, minRating, maxRating, preferTags = [], avoidTag
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("desafio")
-		.setNameLocalizations({ "en-US": "challenge", "es-ES": "desafío" })
-		.setDescription("Cria um desafio personalizado para você no Codeforces")
+		.setName("challenge")
+		.setNameLocalizations({ "pt-BR": "desafio", "es-ES": "desafío" })
+		.setDescription("Create a personalized Codeforces challenge for you")
 		.setDescriptionLocalizations({
-			"en-US": "Create a personalized Codeforces challenge for you",
+			"pt-BR": "Cria um desafio personalizado para você no Codeforces",
 			"es-ES": "Crea un desafío personalizado para ti en Codeforces",
 		})
 		.addStringOption((opt) =>
 			opt
-				.setName("usuario")
-				.setNameLocalizations({ "en-US": "user", "es-ES": "usuario" })
-				.setDescription("Seu usuario no Codeforces")
+				.setName("user")
+				.setNameLocalizations({ "pt-BR": "usuário", "es-ES": "usuario" })
+				.setDescription("Your Codeforces handle")
 				.setDescriptionLocalizations({
-					"en-US": "Your Codeforces handle",
+					"pt-BR": "Seu usuario no Codeforces",
 					"es-ES": "Tu usuario de Codeforces",
 				})
 				.setRequired(true)
@@ -37,7 +37,7 @@ module.exports = {
 	execute: async ({ interaction, bot }) => {
 		try {
 			await interaction.deferReply().catch(() => {})
-			const handle = interaction.options.getString("usuario")
+			const handle = interaction.options.getString("user")
 			const profile = await bot.loadUser(handle, "codeforces")
 
 			const baseRating = profile.rating || profile.maxRating || 1200

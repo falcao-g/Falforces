@@ -3,14 +3,14 @@ const crypto = require("crypto")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("diario")
+		.setName("daily")
 		.setNameLocalizations({
-			"en-US": "daily",
+			"pt-BR": "diario",
 			"es-ES": "diario",
 		})
-		.setDescription("Mostra o problema do Codeforces do dia")
+		.setDescription("Shows the Codeforces problem of the day")
 		.setDescriptionLocalizations({
-			"en-US": "Shows the Codeforces problem of the day",
+			"pt-BR": "Mostra o problema do Codeforces do dia",
 			"es-ES": "Muestra el problema del día de Codeforces",
 		}),
 
@@ -24,10 +24,10 @@ module.exports = {
 			const filtered = problems.filter((p) => p.rating && p.rating >= 800 && p.rating <= 1400)
 
 			if (filtered.length === 0) {
-				throw new Error("Nenhum problema encontrado")
+				throw new Error("No problems found")
 			}
 
-			// seed diária (YYYY-MM-DD)
+			// daily seed (YYYY-MM-DD)
 			const today = new Date().toISOString().slice(0, 10)
 			const hash = crypto.createHash("md5").update(today).digest("hex")
 			const index = parseInt(hash.slice(0, 8), 16) % filtered.length

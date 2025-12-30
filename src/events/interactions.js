@@ -13,10 +13,6 @@ module.exports = {
 			// this handles slash commands and context menus
 			const command = client.commands.get(interaction.commandName)
 
-			if (command.cooldown) {
-				// here we check if the user is on cooldown
-			}
-
 			if (command.developer && !bot.config.devs.includes(interaction.user.id)) {
 				return interaction.reply({
 					content: bot.getMessage(interaction, "BOT_OWNERS_ONLY"),
@@ -49,10 +45,6 @@ module.exports = {
 				var subcommand = interaction.options.getSubcommand()
 			} catch {
 				var subcommand = interaction.customId.split(" ")[1]
-			}
-
-			if (command.cooldown) {
-				// here we check if the user is on cooldown
 			}
 
 			await command.execute({

@@ -107,26 +107,21 @@ class Bot {
 			})
 	}
 
-	async getInsignias(handle) {
-		const insignias = []
+	async getBadges(handle) {
+		const badges = []
 		const contests = this._contests
 
 		for (const contest of contests) {
-			if (contest.participantes.includes(handle)) {
-				insignias.push(await this.client.application.emojis.fetch(contest.insignia))
+			if (contest.contestants.includes(handle)) {
+				badges.push(await this.client.application.emojis.fetch(contest.badge))
 			}
 		}
 
-		return insignias
+		return badges
 	}
 
 	async fetchAndMerge(user) {
-		var request = await fetch(
-			`https://codeforces.com/api/user.info?handles=${user.handle}&checkHistoricHandles=false`,
-			{
-				method: "GET",
-			}
-		)
+		var request = await fetch(`https://codeforces.com/api/user.info?handles=${user.handle}&checkHistoricHandles=false`)
 
 		var data = await request.json()
 		Object.assign(user, data.result[0])
@@ -147,17 +142,17 @@ class Bot {
 		var lastDay = null
 		var currentStreak = 0
 		var maxDaysInRow = 0
-		allSubs.forEach((submissao) => {
-			triedProblems.add(submissao.problem.name)
+		allSubs.forEach((submission) => {
+			triedProblems.add(submission.problem.name)
 
-			if (submissao.programmingLanguage && submissao.programmingLanguage !== "unknown") {
-				languages.set(submissao.programmingLanguage, (languages.get(submissao.programmingLanguage) || 0) + 1)
+			if (submission.programmingLanguage && submission.programmingLanguage !== "unknown") {
+				languages.set(submission.programmingLanguage, (languages.get(submission.programmingLanguage) || 0) + 1)
 			}
 
-			if (submissao.verdict === "OK") {
-				solvedProblems.add(submissao.problem.name)
+			if (submission.verdict === "OK") {
+				solvedProblems.add(submission.problem.name)
 
-				const day = Math.floor(submissao.creationTimeSeconds / 86400)
+				const day = Math.floor(submission.creationTimeSeconds / 86400)
 				if (lastDay === null) {
 					currentStreak = 1
 				} else if (day === lastDay + 1) {
@@ -168,12 +163,12 @@ class Bot {
 				lastDay = day
 				maxDaysInRow = Math.max(maxDaysInRow, currentStreak)
 
-				if (submissao.problem.rating > hardestSolvedRating) {
-					hardestSolved = `${submissao.problem.name} | ${submissao.problem.rating}`
-					hardestSolvedRating = submissao.problem.rating
+				if (submission.problem.rating > hardestSolvedRating) {
+					hardestSolved = `${submission.problem.name} | ${submission.problem.rating}`
+					hardestSolvedRating = submission.problem.rating
 				}
 
-				submissao.problem.tags.forEach((tag) => {
+				submission.problem.tags.forEach((tag) => {
 					if (favoriteTags.has(tag)) {
 						favoriteTags.set(tag, favoriteTags.get(tag) + 1)
 					} else {
@@ -182,8 +177,8 @@ class Bot {
 				})
 			}
 
-			if (submissao.author.participantType === "CONTESTANT") {
-				contests.add(submissao.contestId)
+			if (submission.author.participantType === "CONTESTANT") {
+				contests.add(submission.contestId)
 			}
 		})
 
@@ -217,9 +212,7 @@ class Bot {
 			return user
 		}
 
-		var request = await fetch(`https://codeforces.com/api/user.info?handles=${handle}&checkHistoricHandles=false`, {
-			method: "GET",
-		})
+		var request = await fetch(`https://codeforces.com/api/user.info?handles=${handle}&checkHistoricHandles=false`)
 
 		if (!request.ok) {
 			throw new Error(`Failed to fetch user info: ${request.status} ${request.statusText}`)

@@ -3,35 +3,35 @@ const { SlashCommandBuilder } = require("discord.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("match")
-		.setDescription("Calcula a % de similaridade entre dois usuários do Codeforces")
+		.setDescription("Calculate the % of similarity between two Codeforces users")
 		.setDescriptionLocalizations({
-			"en-US": "Calculates the % of similarity between two Codeforces users",
+			"pt-BR": "Calcula a % de similaridade entre dois usuários do Codeforces",
 			"es-ES": "Calcula el % de similitud entre dos usuarios de Codeforces",
 		})
 		.addStringOption((string) =>
 			string
-				.setName("primeiro")
+				.setName("first")
 				.setNameLocalizations({
-					"en-US": "first",
+					"pt-BR": "primeiro",
 					"es-ES": "primero",
 				})
-				.setDescription("Primeiro usuário do Codeforces")
+				.setDescription("First Codeforces user")
 				.setDescriptionLocalizations({
-					"en-US": "First Codeforces user",
+					"pt-BR": "Primeiro usuário do Codeforces",
 					"es-ES": "Primer usuario de Codeforces",
 				})
 				.setRequired(true)
 		)
 		.addStringOption((string) =>
 			string
-				.setName("segundo")
+				.setName("second")
 				.setNameLocalizations({
-					"en-US": "second",
+					"pt-BR": "segundo",
 					"es-ES": "segundo",
 				})
-				.setDescription("Segundo usuário do Codeforces")
+				.setDescription("Second Codeforces user")
 				.setDescriptionLocalizations({
-					"en-US": "Second Codeforces user",
+					"pt-BR": "Segundo usuário do Codeforces",
 					"es-ES": "Segundo usuario de Codeforces",
 				})
 				.setRequired(true)
@@ -40,14 +40,14 @@ module.exports = {
 		try {
 			await interaction.deferReply()
 
-			const user1 = interaction.options.getString("primeiro")
-			const user2 = interaction.options.getString("segundo")
+			const user1 = interaction.options.getString("first")
+			const user2 = interaction.options.getString("second")
 
 			const p1 = await bot.loadUser(user1, "codeforces").catch(async (error) => {
-				throw new Error("Usuário não encontrado", { cause: user1 })
+				throw new Error("User not found", { cause: user1 })
 			})
 			const p2 = await bot.loadUser(user2, "codeforces").catch(async (error) => {
-				throw new Error("Usuário não encontrado", { cause: user2 })
+				throw new Error("User not found", { cause: user2 })
 			})
 
 			const tagFreq1 = {}
@@ -111,7 +111,7 @@ module.exports = {
 				embeds: [embed],
 			})
 		} catch (error) {
-			if (error.message === "Usuário não encontrado") {
+			if (error.message === "User not found") {
 				return interaction.editReply({
 					content: bot.i18n.get(interaction, "errors.handle_not_found", { HANDLE: error.cause }),
 				})
