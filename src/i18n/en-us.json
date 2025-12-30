@@ -3,6 +3,14 @@
     "botinfo": {
         "response": ":house: Servers: {SERVIDORES}\n:zap: Uptime: {TEMPO}"
     },
+    "challenge": {
+      "embed": {
+        "title": "🎈 Custom challenge",
+        "field_easy": "🟢 Easy",
+        "field_medium": "🟡 Medium",
+        "field_hard": "🔴 Hard"
+      }
+    },
     "contest": {
       "embed": {
         "title": ":bell: Notifications Enabled!",
