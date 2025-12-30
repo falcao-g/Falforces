@@ -10,7 +10,7 @@ Falforces é um bot que tem como objetivo promover a Programação Competitiva d
 
 <p align="center">
     <a title="Version discord.js" href="https://www.npmjs.com/package/discord.js">
-        <img src="https://img.shields.io/badge/discord.js-v14.9.3-blue.svg?logo=npm" alt="Version discord.js">
+        <img src="https://img.shields.io/badge/discord.js-v14.18.0-blue.svg?logo=npm" alt="Version discord.js">
     </a>
     <a title="Stars" href="https://github.com/falcao-g/falforces">
         <img src="https://img.shields.io/github/stars/falcao-g/falforces" alt="Stars">
@@ -27,5 +27,9 @@ Falforces é um bot que tem como objetivo promover a Programação Competitiva d
 - 🫶 Match algorítimico, verificar a similariedade entre você e um amigo
 - 🎖️ Crie insignias personalizadas para participantes de competições oficiais
 - ✨ E muito mais!
+
+## 🤝 Contribuindo
+
+Contribuições são sempre bem-vindas! Um ótimo exemplo de contribuição são as insígnias, elas ajudam a reconhecer os participantes de diferentes competições, e podem ser criadas por qualquer um. Para mais informações sobre essa e outras formas de contribuir, confira o arquivo [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Adicione ele no seu servidor por esse [link](https://discord.com/oauth2/authorize?client_id=1348139773658796073&permissions=0&integration_type=0&scope=bot+applications.commands)
