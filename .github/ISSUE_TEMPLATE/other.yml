@@ -1,0 +1,22 @@
+name: 💡 Outro
+description: Dúvidas, comentários, sugestões de repo, ou outra coisa que não se encaixe nos outros modelos.
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: "# Outro"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição da sugestão ou comentário
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Mídia, se aplicável
+      description: Captura de tela, GIF, vídeo, etc.
+    validations:
+      required: false
