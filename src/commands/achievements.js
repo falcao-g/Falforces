@@ -65,7 +65,6 @@ module.exports = {
 				embeds.push(embed)
 				page++
 				achievements = createList(user, page)
-				console.log("a")
 			}
 
 			const paginator = paginate()
