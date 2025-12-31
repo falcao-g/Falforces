@@ -20,10 +20,6 @@
       "name": "Comfort Zone",
       "description": "Solve 20 problems with a rating of 1000 or lower"
     },
-    "getting_harder": {
-      "name": "Getting Harder",
-      "description": "Solve 20 problems with a rating greater than 1400"
-    },
     "breaking_barriers": {
       "name": "Breaking Barriers",
       "description": "Solve your first problem with a rating greater than 1800"

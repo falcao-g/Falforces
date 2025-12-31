@@ -40,15 +40,6 @@ const achievements = [
 		},
 	},
 	{
-		id: "getting_harder",
-		emoji: ":yellow_circle:",
-		hasAchieved: (user) => user.submissions.filter((s) => s.verdict === "OK" && s.problem.rating >= 1400).length >= 10,
-		progress: (user) => {
-			const count = user.submissions.filter((s) => s.verdict === "OK" && s.problem.rating >= 1400).length
-			return `${format(count)}/10`
-		},
-	},
-	{
 		id: "breaking_barriers",
 		emoji: ":red_circle:",
 		hasAchieved: (user) => user.submissions.some((s) => s.verdict === "OK" && s.problem.rating >= 1800),

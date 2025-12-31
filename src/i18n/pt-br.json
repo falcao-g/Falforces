@@ -20,10 +20,6 @@
       "name": "Zona de Conforto",
       "description": "Resolva 20 problemas com rating menor ou igual a 1000"
     },
-    "getting_harder": {
-      "name": "Ficando Mais Difícil",
-      "description": "Resolva 20 problemas com rating maior que 1400"
-    },
     "breaking_barriers": {
       "name": "Quebrando Barreiras",
       "description": "Resolva seu primeiro problema com rating maior que 1800"
