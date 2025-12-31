@@ -22,10 +22,13 @@ Falforces é um bot que tem como objetivo promover a Programação Competitiva d
 ## 🚀 Poderes
 
 - 🔍 Analisar seu perfil do Codeforces de maneira mais detalhada
-- 🕵️ Stalkear seu amigo e ver quais exercícios ele fez sem você
-- ⏰ Receber notificações de contests
+- ⏰ Receber notificações de contests do Codeforces e AtCoder
+- 🎖️ Crie insignias personalizadas para participantes de competições
+- 🏆 Sistema de conquistas que incentiva o estudo e prática
+- 🧠 Sugestão personalizada de problemas
+- 📅 Problema diário, um problema em destaque todos os dias
+- 🕵️ Stalkear seu amigo e ver os últimos problemas resolvidos por ele
 - 🫶 Match algorítimico, verificar a similariedade entre você e um amigo
-- 🎖️ Crie insignias personalizadas para participantes de competições oficiais
 - ✨ E muito mais!
 
 ## 🤝 Contribuindo
