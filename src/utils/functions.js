@@ -103,15 +103,18 @@ function paginate() {
 			}
 		},
 		components() {
-			componentsToAdd = []
+			const componentsToAdd = []
 
 			if (__components.length > 0) {
 				if (__components.length === __embeds.length && __components.at(cur) instanceof ButtonBuilder) {
-					componentsToAdd.push(new ActionRowBuilder().addComponents(__components.at(cur)).addComponents(...traverser))
+					componentsToAdd.push(new ActionRowBuilder().addComponents(__components.at(cur), ...traverser))
 				} else {
 					componentsToAdd.push(new ActionRowBuilder().addComponents(__components.at(cur)))
-					if (__embeds.length > 1) componentsToAdd.push(new ActionRowBuilder().addComponents(...traverser))
 				}
+			}
+
+			if (__embeds.length > 1) {
+				componentsToAdd.push(new ActionRowBuilder().addComponents(...traverser))
 			}
 
 			return {

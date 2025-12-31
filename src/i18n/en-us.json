@@ -1,11 +1,78 @@
 {
+  "achievements": {
+    "first_blood": {
+      "name": "First Blood",
+      "description": "Solve your first problem on Codeforces"
+    },
+    "journey_begins": {
+      "name": "The Journey Begins",
+      "description": "Solve 10 problems on Codeforces"
+    },
+    "centurion": {
+      "name": "Centurion",
+      "description": "Solve 100 problems on Codeforces"
+    },
+    "tourist_archenemy": {
+      "name": "Tourist's Archenemy",
+      "description": "Solve 500 problems on Codeforces"
+    },
+    "comfort_zone": {
+      "name": "Comfort Zone",
+      "description": "Solve 20 problems with a rating of 1000 or lower"
+    },
+    "getting_harder": {
+      "name": "Getting Harder",
+      "description": "Solve 20 problems with a rating greater than 1400"
+    },
+    "breaking_barriers": {
+      "name": "Breaking Barriers",
+      "description": "Solve your first problem with a rating greater than 1800"
+    },
+    "greedy_master": {
+      "name": "Greedy Master",
+      "description": "Solve 30 problems with the 'greedy' tag"
+    },
+    "dp_apprentice": {
+      "name": "Dynamic Programming Apprentice",
+      "description": "Solve 15 problems with the 'dp' tag"
+    },
+    "tag_collector": {
+      "name": "Tag Collector",
+      "description": "Solve at least one problem from 10 different tags"
+    },
+    "lucky_7": {
+      "name": "Lucky 7",
+      "description": "Solve problems for 7 consecutive days"
+    },
+    "pick_your_team": {
+      "name": "Pick Your Team",
+      "description": "Be friends with 10 users on Codeforces"
+    },
+    "where_is_my_medal": {
+      "name": "Where is My Medal?",
+      "description": "Participate in 10 contests on Codeforces"
+    },
+    "never_give_up": {
+      "name": "Never Give Up",
+      "description": "Face the challenge of trying problems without solving them for the first time"
+    },
+    "community_helper": {
+      "name": "Community Helper",
+      "description": "Make your first contribution on Codeforces"
+    }
+  },
   "commands": {
+    "achievements": {
+      "embed": {
+        "title": "🏅 Achievements of {HANDLE} — Page {PAGE}/{TOTAL}"
+      } 
+    },
     "botinfo": {
         "response": ":house: Servers: {SERVERS}\n:zap: Uptime: {UPTIME}"
     },
     "challenge": {
       "embed": {
-        "title": "🎈 Custom challenge",
+        "title": "🎈 Custom Challenge",
         "field_easy": "🟢 Easy",
         "field_medium": "🟡 Medium",
         "field_hard": "🔴 Hard"

@@ -1,5 +1,72 @@
 {
+  "achievements": {
+    "first_blood": {
+      "name": "Primeiro Sangue",
+      "description": "Resolva seu primeiro problema no Codeforces"
+    },
+    "journey_begins": {
+      "name": "A Jornada Começa",
+      "description": "Resolva 10 problemas no Codeforces"
+    },
+    "centurion": {
+      "name": "Centurião",
+      "description": "Resolva 100 problemas no Codeforces"
+    },
+    "tourist_archenemy": {
+      "name": "Arqui-inimigo do Tourist",
+      "description": "Resolva 500 problemas no Codeforces"
+    },
+    "comfort_zone": {
+      "name": "Zona de Conforto",
+      "description": "Resolva 20 problemas com rating menor ou igual a 1000"
+    },
+    "getting_harder": {
+      "name": "Ficando Mais Difícil",
+      "description": "Resolva 20 problemas com rating maior que 1400"
+    },
+    "breaking_barriers": {
+      "name": "Quebrando Barreiras",
+      "description": "Resolva seu primeiro problema com rating maior que 1800"
+    },
+    "greedy_master": {
+      "name": "Mestre Guloso",
+      "description": "Resolva 30 problemas com a tag 'greedy'"
+    },
+    "dp_apprentice": {
+      "name": "Aprendiz de Programação Dinâmica",
+      "description": "Resolva 15 problemas com a tag 'dp'"
+    },
+    "tag_collector": {
+      "name": "Colecionador de Tags",
+      "description": "Resolva pelo menos um problema de 10 tags diferentes"
+    },
+    "lucky_7": {
+      "name": "Sortudo 7",
+      "description": "Resolva problemas por 7 dias consecutivos"
+    },
+    "pick_your_team": {
+      "name": "Escolha Sua Equipe",
+      "description": "Seja amigo de 10 usuários no Codeforces"
+    },
+    "where_is_my_medal": {
+      "name": "Cadê Minha Medalha?",
+      "description": "Participe de 10 contests no Codeforces"
+    },
+    "never_give_up": {
+      "name": "Nunca Desista",
+      "description": "Enfrente pela primeira vez o desafio de tentar problemas sem resolvê-los"
+    },
+    "community_helper": {
+      "name": "Ajudante da Comunidade",
+      "description": "Faça sua primeira contribuição no Codeforces"
+    }
+  },
   "commands": {
+    "achievements": {
+      "embed": {
+        "title": "🏅 Insígnias de {HANDLE} — Página {PAGE}/{TOTAL}"
+      } 
+    },
     "botinfo": {
         "response": ":house: Servidores: {SERVERS}\n:zap: Uptime: {UPTIME}"
     },

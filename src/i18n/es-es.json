@@ -1,11 +1,78 @@
 {
+  "achievements": {
+    "first_blood": {
+      "name": "Primera Sangre",
+      "description": "Resuelve tu primer problema en Codeforces"
+    },
+    "journey_begins": {
+      "name": "El Viaje Comienza",
+      "description": "Resuelve 10 problemas en Codeforces"
+    },
+    "centurion": {
+      "name": "Centurión",
+      "description": "Resuelve 100 problemas en Codeforces"
+    },
+    "tourist_archenemy": {
+      "name": "Archienemigo del Tourist",
+      "description": "Resuelve 500 problemas en Codeforces"
+    },
+    "comfort_zone": {
+      "name": "Zona de Confort",
+      "description": "Resuelve 20 problemas con rating menor o igual a 1000"
+    },
+    "getting_harder": {
+      "name": "Poniéndose Más Difícil",
+      "description": "Resuelve 20 problemas con rating mayor que 1400"
+    },
+    "breaking_barriers": {
+      "name": "Rompiendo Barreras",
+      "description": "Resuelve tu primer problema con rating mayor que 1800"
+    },
+    "greedy_master": {
+      "name": "Maestro Codicioso",
+      "description": "Resuelve 30 problemas con la etiqueta 'greedy'"
+    },
+    "dp_apprentice": {
+      "name": "Aprendiz de Programación Dinámica",
+      "description": "Resuelve 15 problemas con la etiqueta 'dp'"
+    },
+    "tag_collector": {
+      "name": "Coleccionista de Etiquetas",
+      "description": "Resuelve al menos un problema de 10 etiquetas diferentes"
+    },
+    "lucky_7": {
+      "name": "Suerte 7",
+      "description": "Resuelve problemas durante 7 días consecutivos"
+    },
+    "pick_your_team": {
+      "name": "Elige Tu Equipo",
+      "description": "Sé amigo de 10 usuarios en Codeforces"
+    },
+    "where_is_my_medal": {
+      "name": "¿Dónde Está Mi Medalla?",
+      "description": "Participa en 10 concursos en Codeforces"
+    },
+    "never_give_up": {
+      "name": "Nunca Te Rindas",
+      "description": "Enfrenta por primera vez el desafío de intentar problemas sin resolverlos"
+    },
+    "community_helper": {
+      "name": "Ayudante de la Comunidad",
+      "description": "Haz tu primera contribución en Codeforces"
+    }
+  },
   "commands": {
+    "achievements": {
+      "embed": {
+        "title": "🏅 Insignias de {HANDLE} — Página {PAGE}/{TOTAL}"
+      } 
+    },
     "botinfo": {
-        "response": ":house: Servidores: {SERVERS}\n:zap: Uptime: {UPTIME}"
+      "response": ":house: Servidores: {SERVERS}\n:zap: Tiempo de actividad: {UPTIME}"
     },
     "challenge": {
       "embed": {
-        "title": "🎈 Desafío personalizado",
+        "title": "🎈 Desafío Personalizado",
         "field_easy": "🟢 Fácil",
         "field_medium": "🟡 Medio",
         "field_hard": "🔴 Difícil"
@@ -14,7 +81,7 @@
     "contest": {
       "embed": {
         "title": ":bell: ¡Notificaciones Activadas!",
-        "description": "Recibirás notificaciones un día y una hora antes de cada contest en el canal {CHANNEL}",
+        "description": "Recibirás notificaciones un día y una hora antes de cada concurso en el canal {CHANNEL}",
         "field_value": "**Para desactivar las notificaciones, usa el comando `/parar`**"
       }
     },
@@ -30,18 +97,18 @@
       "embed": {
         "title": ":heart_hands: Match de estilo algorítmico: {USER1} × {USER2}",
         "description": "Basado en **todas las submissões**",
-        "field_similarity": "Similaridad",
-        "field_top_tags": ":label: Principales tags en común"
+        "field_similarity": "Similitud",
+        "field_top_tags": ":label: Principales etiquetas en común"
       }
     },
     "stop": {
       "embed": {
         "title": ":no_bell: ¡Notificaciones Desactivadas!",
-        "description": "No recibirás más notificaciones sobre contests."
+        "description": "No recibirás más notificaciones sobre concursos."
       }
     },
     "ping": {
-      "response": ":ping_pong: Pong! El ping del bot es de {PING}ms."
+      "response": ":ping_pong: ¡Pong! El ping del bot es de {PING}ms."
     },
     "profile": {
       "country": "🗺️ País: {COUNTRY}\n",
@@ -52,30 +119,30 @@
       "tries": "🧠 Problemas intentados: {TRIES}\n",
       "solved": "🎈 Problemas resueltos: {SOLVED}\n",
       "hardest": "🔥 Problema más difícil: {HARDEST}",
-      "contests": "🏆 Contests participados: {CONTESTS}\n",
-      "tags": "🏷️ Tags favoritas: {TAG1}, {TAG2}, {TAG3}\n",
+      "contests": "🏆 Concursos participados: {CONTESTS}\n",
+      "tags": "🏷️ Etiquetas favoritas: {TAG1}, {TAG2}, {TAG3}\n",
       "top_language": "🌐 Lenguaje más usado: {TOP_LANGUAGE}\n",
       "submissions": "🖥️ Número de submissões: {SUBMISSIONS}",
-      "days_in_row": "📅  Maior sequência: {DAYS_IN_ROW} dias\n",
+      "days_in_row": "📅  Mayor secuencia: {DAYS_IN_ROW} días\n",
       "embed": {
-        "description": "🚀 Rating actual: {RATING} | Máximo: {MAXRATING}\n👑 Rank actual: {RANK} | Máximo: {MAXRANK}",
-        "footer": "📸 Visto por último en: {LAST_SEEN} | 📋 Registrado en: {REGISTERED}"
+        "description": "🚀 Rating actual: {RATING} | Máximo: {MAXRATING}\n👑 Rango actual: {RANK} | Máximo: {MAXRANK}",
+        "footer": "📸 Visto por última vez en: {LAST_SEEN} | 📋 Registrado en: {REGISTERED}"
       }
     },
     "stalk": {
-      "response": "Últimos problemas que {FRIEND} hizo... :telescope:",
-      "response_none": "{FRIEND} no hizo ningún problema aún! :worried:"
+      "response": "Últimos problemas que {FRIEND} resolvió... :telescope:",
+      "response_none": "{FRIEND} no resolvió ningún problema aún! :worried:"
     },
     "upcoming": {
       "embed": {
-        "title": ":calendar: Próximos Contests do Codeforces e AtCoder",
-        "field_no_contests": "¡Ningún contest futuro encontrado! :thinking:",
+        "title": ":calendar: Próximos Concursos de Codeforces y AtCoder",
+        "field_no_contests": "¡Ningún concurso futuro encontrado! :thinking:",
         "field_contest": "**Inicio:** {START}  :balloon:\n**Link:** {LINK}\n**Duración:** {DURATION}\n**Tipo:** {TYPE}"
       }
     }
   },
   "events": {
-    "contest_notification": "¡El contest comenzará {START}! :balloon:\n\n**Inicio:** {START}\n**Duración:** {DURATION}\n**Tipo:** {TYPE}"
+    "contest_notification": "¡El concurso comenzará {START}! :balloon:\n\n**Inicio:** {START}\n**Duración:** {DURATION}\n**Tipo:** {TYPE}"
   },
   "words": {
     "statistics": "Estadísticas",
@@ -85,7 +152,7 @@
   },
   "errors": {
     "handle_not_found": "¡El usuario `{HANDLE}` no fue encontrado en Codeforces!",
-    "bot": "Tu no puedes usar los comandos de Falbot porque eres un bot",
+    "bot": "No puedes usar los comandos de Falbot porque eres un bot",
     "restricted": "Solo el desarrollador del bot puede ejecutar este comando.",
     "exception": "Ocurrió un error al ejecutar este comando! Este error ha sido informado al desarrollador."
   }
