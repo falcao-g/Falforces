@@ -71,19 +71,19 @@ module.exports = {
 			const pick = (opts) => pickProblem({ problems, ...opts })
 
 			const easy = pick({
-				minRating: baseRating - 400,
-				maxRating: baseRating - 200,
+				minRating: baseRating - 400 >= 800 ? baseRating - 400 : 800,
+				maxRating: baseRating - 200 >= 800 ? baseRating - 200 : 800,
 				preferTags: familiarTags,
 			})
 
 			const medium = pick({
-				minRating: baseRating - 200,
-				maxRating: baseRating - 100,
+				minRating: baseRating - 200 >= 800 ? baseRating - 200 : 800,
+				maxRating: baseRating - 100 >= 800 ? baseRating - 100 : 800,
 			})
 
 			const hard = pick({
-				minRating: baseRating + 100,
-				maxRating: baseRating + 500,
+				minRating: baseRating + 100 <= 3500 ? baseRating + 100 : 3500,
+				maxRating: baseRating + 500 <= 3500 ? baseRating + 500 : 3500,
 				preferTags: unfamiliarTags,
 			})
 
