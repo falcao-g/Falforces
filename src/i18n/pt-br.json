@@ -138,7 +138,7 @@
     }
   },
   "events": {
-    "contest_notification": "O contest vai começar {START}! :balloon:\n\n**Início:** {START}\n**Duração:** {DURATION}\n**Tipo:** {TYPE}"
+    "contest_notification": "O contest vai começar {TIME}! :balloon:\n\n**Início:** {START}\n**Duração:** {DURATION}\n**Tipo:** {TYPE}"
   },
   "words": {
     "statistics": "Estatísticas",

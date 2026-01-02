@@ -244,10 +244,10 @@ class Bot {
 					.setTitle(contest.name)
 					.setDescription(
 						this.i18n.get(null, "events.contest_notification", {
-							TEMPO: `<t:${contest.data.startTimeSeconds}:R>`,
-							INICIO: `<t:${contest.data.startTimeSeconds}:F>`,
-							DURACAO: msToTime(contest.data.durationSeconds * 1000),
-							TIPO: contest.type,
+							TIME: `<t:${contest.data.startTimeSeconds}:R>`,
+							START: `<t:${contest.data.startTimeSeconds}:F>`,
+							DURATION: msToTime(contest.data.durationSeconds * 1000),
+							TYPE: contest.type,
 						})
 					)
 					.setURL(contest.data.url)
